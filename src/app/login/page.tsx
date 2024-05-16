@@ -1,3 +1,4 @@
+import Link from 'next/link';
 const loginPage = () => {
     return (
       <>
@@ -34,12 +35,13 @@ const loginPage = () => {
 
         <label htmlFor="password" className="text-black">Password</label>
           <input
-            type="text"
+            type="password"
             id="password"
             className="w-full px-3 py-2 border border-gray-300 rounded bg-gray-100 text-black"
           />
         </div>
-        
+        <a href="signup" className="text-blue-500 mt-2 inline-block">New to PricePlate? Click here to create an account</a>
+        <Link href="/home">
         <button style={{ 
           backgroundColor: '#283D3B', 
           color: 'white', 
@@ -49,12 +51,14 @@ const loginPage = () => {
           cursor: 'pointer', 
           display: 'flex', 
           justifyContent: 'center', 
+          marginTop: '20px' ,
           alignItems: 'center' }} 
 
           className="rounded shadow-md mb-4">
             
           Login
         </button>
+        </Link>
 
       </div> 
 
