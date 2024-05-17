@@ -1,47 +1,79 @@
-'use client'
-import * as React from 'react';
-import Button from '@mui/material/Button';
-import Box from '@mui/material/Box';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
-import ListItemButton from '@mui/material/ListItemButton';
-import Divider from '@mui/material/Divider';
-import Grid from '@mui/material/Grid';
-import { styled } from '@mui/material/styles';
-import Paper from '@mui/material/Paper';
+"use client"
+import React, { useState } from "react";
+import styles from "./ingredients.module.css";
+import { Box, Button, List, ListItem, ListItemText } from "@mui/material";
+import Link from 'next/link';
 
-const ingredientList = [
-  { ingredientName: 'Flour', unit_cost: 2.99},
-  { ingredientName: 'Sugar', unit_cost: 1.49},
-  { ingredientName: 'Eggs', unit_cost: 0.99},
-  { ingredientName: 'Bread Loaf', unit_cost: 0.35}
-]
+interface Ingredient {
+  ingredientName: string;
+  unit_cost: number;
+}
 
-function IngredientsList() {
+const ingredientList: Ingredient[] = [
+  { ingredientName: 'Flour', unit_cost: 2.99 },
+  { ingredientName: 'Sugar', unit_cost: 1.49 },
+  { ingredientName: 'Eggs', unit_cost: 0.99 },
+  { ingredientName: 'Bread', unit_cost: 0.35 },
+  { ingredientName: 'Apples', unit_cost: 0.82 },
+  { ingredientName: 'Sourdough', unit_cost: 0.43 },
+];
+
+function IngredientsList({ ingredientList }: { ingredientList: Ingredient[] }) {
   return (
-    <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-        <List>
-          {ingredientList.map((ingredient, index) => (
-            <ListItem key={index}>
-              <ListItemText primary={`${ingredient.ingredientName}`}/>
-              <ListItemText primary={`$${ingredient.unit_cost} per unit`}/>
-              <Button variant="contained">More Info</Button>
-            </ListItem>
-          ))}
-        </List>
+    <Box>
+      <List>
+        {ingredientList.map((ingredient, index) => (
+          <ListItem key={index} className={styles.ingredient}>
+            <ListItemText className = {styles.ingredientfield} 
+              primary={`${ingredient.ingredientName}`} 
+              secondary={`$${ingredient.unit_cost} per unit`}/>
+            {/* <ListItemText className = {styles.ingredientfield} primary={`$${ingredient.unit_cost} per unit`} /> */}
+            <Link href="/recipeCard">
+              <Button variant="contained" className = {styles.moreinfo}>More Info</Button>
+            </Link>
+          </ListItem>
+        ))}
+      </List>
     </Box>
   );
 }
 
-export default function ingredientsPage(){
+const SearchBar = ({ onChange, value }: { onChange: (e: React.ChangeEvent<HTMLInputElement>) => void, value: string }) => {
   return (
-    <div>
-      <IngredientsList/>
-      <Button variant="contained">Create New Ingredient</Button>
+    <input
+      type="search"
+      className={styles.search}
+      placeholder="Search Ingredient"
+      onChange={onChange}
+      value={value}
+    />
+  );
+};
+
+export default function IngredientsPage() {
+  const [searchInput, setSearchInput] = useState<string>("");
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchInput(e.target.value);
+  };
+
+  const filteredIngredients = ingredientList.filter((ingredient) => {
+    return ingredient.ingredientName.toLowerCase().includes(searchInput.toLowerCase());
+  });
+
+  return (
+    <div className={styles.ingredientsPage}>
+      <div className={styles.ingredientBox}>
+        <SearchBar onChange={handleChange} value={searchInput} />
+          {filteredIngredients.length === 0 ? (
+            <p>No ingredients found</p>
+              ) : (
+            <IngredientsList ingredientList={filteredIngredients} />
+          )}
+        <Link href="/createIngredient">
+          <Button variant="contained" className={styles.createbutton} color="success">Create New Ingredient</Button>
+        </Link> 
+      </div>
     </div>
-  )
+  );
 }
-
-
-  
