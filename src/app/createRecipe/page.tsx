@@ -16,7 +16,7 @@ const createdingredientList: CreatedIngredient[] = [
   { ingredientName: 'Eggs', unitType: 'dozen', pricePerUnit: 3.99 },
   { ingredientName: 'Bread', unitType: 'loaf', pricePerUnit: 5.35 },
   { ingredientName: 'Apples', unitType: 'individual', pricePerUnit: 0.82 },
-  { ingredientName: 'Sourdough', unitType: 'loaf', pricePerUnit: 3.43 },
+  // { ingredientName: 'Sourdough', unitType: 'loaf', pricePerUnit: 3.43 },
 ];
 
 function CreatedIngredientsList({ ingredientList, checked, handleToggle, handleUnitChange, units }: {
@@ -27,15 +27,15 @@ function CreatedIngredientsList({ ingredientList, checked, handleToggle, handleU
   units: { [key: string]: number };}) {
 
   return (
-    <Box>
+    <Box >
       <List>
         {ingredientList.map((ingredient, index) => (
           <ListItem key={index} className={styles.ingredient} >
-
+          
             <ListItemText
               primary={`${ingredient.ingredientName}`}
               secondary={`$${ingredient.pricePerUnit} per ${ingredient.unitType}`}
-              className={styles.ingredientfield}
+              className={styles.ingredientName}
             />
 
             <TextField
@@ -48,17 +48,15 @@ function CreatedIngredientsList({ ingredientList, checked, handleToggle, handleU
             />
 
             <ListItemSecondaryAction>
-              <Checkbox
+              <ListItemText
+                primary={`Cost: $${(ingredient.pricePerUnit * (units[ingredient.ingredientName] || 0)).toFixed(2)}`}
+              />
+              <Checkbox 
                 edge="end"
                 onChange={handleToggle(ingredient.ingredientName)}
                 checked={checked.indexOf(ingredient.ingredientName) !== -1 && units[ingredient.ingredientName] > 0}
               />
             </ListItemSecondaryAction>
-
-            <ListItemText 
-              primary={`Cost: $${(ingredient.pricePerUnit * (units[ingredient.ingredientName] || 0)).toFixed(2)}`}
-              className={styles.costfield}/>
-
           </ListItem>
         ))}
       </List>
@@ -90,7 +88,7 @@ const CreateRecipePage = () => {
   const handleToggle = (ingredientName: string) => () => {
     const currentIndex = checked.indexOf(ingredientName);
     const newChecked = [...checked];
-    if (currentIndex === -1 && units[ingredientName] > 0) {
+    if (currentIndex === -1) {
       newChecked.push(ingredientName);
     } else {
       newChecked.splice(currentIndex, 1);
@@ -144,7 +142,7 @@ const CreateRecipePage = () => {
         <Link href="/home">
           <Button variant="contained" className={styles.createbutton} color="success">Create Recipe</Button>
         </Link> 
-        
+
       </div>
     </div>
   );
