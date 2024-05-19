@@ -2,7 +2,7 @@
 import React from "react";
 import styles from "./ingredientCard.module.css";
 
-interface IngredientCardProps {
+type IngredientCardProps  = {
   ingredientName?: string;
   price?: string;
   costPerUnit?: string;
@@ -40,4 +40,4 @@ const IngredientCard: React.FC<IngredientCardProps> = ({
   );
 };
 
-export default IngredientCard;
+export default IngredientCard ;
