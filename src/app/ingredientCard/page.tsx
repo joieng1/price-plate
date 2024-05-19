@@ -1,16 +1,13 @@
-"use client"
-import React, { useState } from "react";
+"use client";
+import React from "react";
 import styles from "./ingredientCard.module.css";
-import { Box, Button, List, ListItem, ListItemText } from "@mui/material";
-import Link from 'next/link';
-import { alignProperty } from "@mui/material/styles/cssUtils";
 
 interface IngredientCardProps {
-  ingredientName: string;
-  price: string;
-  costPerUnit: string;
-  vendor: string;
-  totalAmount: string;
+  ingredientName?: string;
+  price?: string;
+  costPerUnit?: string;
+  vendor?: string;
+  totalAmount?: string;
 }
 
 const IngredientCard: React.FC<IngredientCardProps> = ({
@@ -21,24 +18,26 @@ const IngredientCard: React.FC<IngredientCardProps> = ({
   totalAmount = "Total"
 }) => {
   return (
-    <div className={styles.ingredientsPage}>
-      <div className={styles.ingredientBox}>
-        <p className={styles.blackFont}>{ingredientName}</p>
-      </div>
-      <div className={styles.priceBox}>
+    <div className={styles.ingredientsCard}>
+    <div className={styles.separateBox}>
+      <p className={styles.blackFont}>{ingredientName}</p>
+    </div>
+    <div className={styles.boxContainer}>
+      <div className={styles.box}>
         <p className={styles.blackFont}>{price}</p>
       </div>
-      <div className={styles.vendorBox}>
+      <div className={styles.box}>
         <p className={styles.blackFont}>{vendor}</p>
       </div>
-      <div className={styles.totalBox}>
+      <div className={styles.box}>
         <p className={styles.blackFont}>{totalAmount}</p>
       </div>
-      <div className={styles.unitBox}>
+      <div className={styles.box}>
         <p className={styles.blackFont}>{costPerUnit}</p>
       </div>
     </div>
+  </div>
   );
 };
 
-export default IngredientCard
+export default IngredientCard;
