@@ -15,7 +15,7 @@ const createdingredientList: CreatedIngredient[] = [
   { ingredientName: 'Sugar', unitType: 'pound', pricePerUnit: 4.49 },
   { ingredientName: 'Eggs', unitType: 'dozen', pricePerUnit: 3.99 },
   { ingredientName: 'Bread', unitType: 'loaf', pricePerUnit: 5.35 },
-  { ingredientName: 'Apples', unitType: 'individual', pricePerUnit: 0.82 },
+  { ingredientName: 'Apples', unitType: 'apple', pricePerUnit: 0.82 },
   // { ingredientName: 'Sourdough', unitType: 'loaf', pricePerUnit: 3.43 },
 ];
 
@@ -26,42 +26,45 @@ function CreatedIngredientsList({ ingredientList, checked, handleToggle, handleU
   handleUnitChange: (ingredientName: string) => (event: React.ChangeEvent<HTMLInputElement>) => void;
   units: { [key: string]: number };}) {
 
-  return (
-    <Box >
-      <List>
-        {ingredientList.map((ingredient, index) => (
-          <ListItem key={index} className={styles.ingredient} >
-          
-            <ListItemText
-              primary={`${ingredient.ingredientName}`}
-              secondary={`$${ingredient.pricePerUnit} per ${ingredient.unitType}`}
-              className={styles.ingredientName}
-            />
-
-            <TextField
-              type="number"
-              value={units[ingredient.ingredientName] || ''}
-              onChange={handleUnitChange(ingredient.ingredientName)}
-              label="Enter Units"
-              inputProps={{ min: 0 }}
-              className={styles.ingredientfield}
-            />
-
-            <ListItemSecondaryAction>
-              <ListItemText
-                primary={`Cost: $${(ingredient.pricePerUnit * (units[ingredient.ingredientName] || 0)).toFixed(2)}`}
-              />
-              <Checkbox 
-                edge="end"
-                onChange={handleToggle(ingredient.ingredientName)}
-                checked={checked.indexOf(ingredient.ingredientName) !== -1 && units[ingredient.ingredientName] > 0}
-              />
-            </ListItemSecondaryAction>
-          </ListItem>
-        ))}
-      </List>
-    </Box>
-  );
+    return (
+      <Box >
+        <List>
+          {ingredientList.map((ingredient, index) => (
+            <ListItem key={index} className={styles.ingredient} >
+            
+              <div className={styles.ingredientContent}>
+                <ListItemText
+                  primary={`${ingredient.ingredientName}`}
+                  secondary={`$${ingredient.pricePerUnit} per ${ingredient.unitType}`}
+                  className={styles.ingredientName}
+                />
+  
+                <TextField
+                  type="number"
+                  value={units[ingredient.ingredientName] || ''}
+                  onChange={handleUnitChange(ingredient.ingredientName)}
+                  label="Enter Units"
+                  inputProps={{ min: 0, max: 99999999999}}
+                  className={styles.ingredientfield}
+                />
+  
+                <div className={styles.secondaryAction}>
+                  <ListItemText
+                    primary={`Cost: $${(ingredient.pricePerUnit * (units[ingredient.ingredientName] || 0)).toFixed(2)}`}
+                    className={styles.costText}
+                  />
+                  <Checkbox 
+                    edge="end"
+                    onChange={handleToggle(ingredient.ingredientName)}
+                    checked={checked.indexOf(ingredient.ingredientName) !== -1 && units[ingredient.ingredientName] > 0}
+                  />
+                </div>
+              </div>
+            </ListItem>
+          ))}
+        </List>
+      </Box>
+    );
 }
 
 const SearchBar = ({ onChange, value }: { onChange: (e: React.ChangeEvent<HTMLInputElement>) => void, value: string }) => {
@@ -88,7 +91,7 @@ const CreateRecipePage = () => {
   const handleToggle = (ingredientName: string) => () => {
     const currentIndex = checked.indexOf(ingredientName);
     const newChecked = [...checked];
-    if (currentIndex === -1) {
+    if (currentIndex === -1 && units[ingredientName] > 0) {
       newChecked.push(ingredientName);
     } else {
       newChecked.splice(currentIndex, 1);
@@ -98,7 +101,7 @@ const CreateRecipePage = () => {
   };
 
   const handleUnitChange = (ingredientName: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newUnits = { ...units, [ingredientName]: parseInt(e.target.value) || 0 };
+    const newUnits = { ...units, [ingredientName]: parseFloat(e.target.value) || 0 };
     setUnits(newUnits);
   };
 

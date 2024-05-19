@@ -23,7 +23,7 @@
 
 .ingredient {
     width: 100%;
-    margin-right: 100px;
+    margin-right: 150px;
     margin-bottom: 10px;
     background: #fffcf4;
     border-radius: 5px;
@@ -31,12 +31,20 @@
     box-shadow: -10px 10px 4px rgba(0, 0, 0, 0.25);
 }
 
-.ingredientfield {
-    margin-right: 120px;
+.ingredientContent {
+    display: flex;
+    flex-grow: 1;
+    align-items: center;
+    gap: 16px;
 }
 
 .ingredientName {
     margin-right: 60px;
+}
+
+.secondaryAction {
+    display: flex;
+    align-items: center;
 }
 
 .search {
