@@ -1,0 +1,105 @@
+.ingredientsPage {
+    background-color: antiquewhite;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.blackFont {
+    color: #000000;
+}
+  
+.ingredientBox {
+    position: relative;
+    right: 540px;
+    bottom: 200px;
+    box-sizing: border-box;
+    width: 300px;
+    padding: 20px;
+    background: #9DB4AB;
+    border: 1px solid #000000;
+    box-shadow: -10px 10px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    max-width: 100%;
+}
+
+.priceBox {
+    position: absolute;
+    left: 65px;
+    bottom: 350px;
+    box-sizing: border-box;
+    width: 500px;
+    padding: 20px;
+    background: #9DB4AB;
+    border: 1px solid #000000;
+    box-shadow: -10px 10px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.vendorBox {
+    position: absolute;
+    left: 65px;
+    bottom: 100px;
+    box-sizing: border-box;
+    width: 500px;
+    padding: 20px;
+    background: #9DB4AB;
+    border: 1px solid #000000;
+    box-shadow: -10px 10px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.totalBox {
+    position: absolute;
+    left: 945px;
+    bottom: 350px;
+    box-sizing: border-box;
+    width: 500px;
+    padding: 20px;
+    background: #9DB4AB;
+    border: 1px solid #000000;
+    box-shadow: -10px 10px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.unitBox {
+    position: absolute;
+    left: 945px;
+    bottom: 100px;
+    box-sizing: border-box;
+    width: 500px;
+    padding: 20px;
+    background: #9DB4AB;
+    border: 1px solid #000000;
+    box-shadow: -10px 10px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+}
+  
+  
+
+  
+.ingredient {
+    width: 100%;
+    margin-right: 120px;
+    margin-bottom: 10px;
+    background: #fffcf4;
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: -10px 10px 4px rgba(0, 0, 0, 0.25);
+  }
+
+.ingredientfield {
+    margin-right: 50px;
+}
+  
