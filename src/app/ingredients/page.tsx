@@ -29,7 +29,7 @@ function IngredientsList({ ingredientList }: { ingredientList: Ingredient[] }) {
               secondary={`$${ingredient.unit_cost} per unit`}/>
             {/* <ListItemText className = {styles.ingredientfield} primary={`$${ingredient.unit_cost} per unit`} /> */}
             <Link href="/recipeCard">
-              <Button variant="contained" className = {styles.moreinfo}>More Info</Button>
+              <Button variant="contained" className = {styles.moreinfo} color = "success" >More Info</Button>
             </Link>
           </ListItem>
         ))}
