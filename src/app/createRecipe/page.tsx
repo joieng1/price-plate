@@ -93,15 +93,22 @@ const CreateRecipePage = () => {
     const newChecked = [...checked];
     if (currentIndex === -1 && units[ingredientName] > 0) {
       newChecked.push(ingredientName);
-    } else {
+    } 
+    else if(currentIndex !== -1 && units[ingredientName] != 0){
       newChecked.splice(currentIndex, 1);
-      units[ingredientName] = 0;
+      units[ingredientName] = 0; 
     }
     setChecked(newChecked);
   };
 
-  const handleUnitChange = (ingredientName: string) => (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleUnitChange = (ingredientName: string) => (e: React.ChangeEvent<HTMLInputElement>) => { 
     const newUnits = { ...units, [ingredientName]: parseFloat(e.target.value) || 0 };
+    const currentIndex = checked.indexOf(ingredientName);
+    if(units[ingredientName] == 0 && currentIndex != -1){
+      const newChecked = [...checked];
+      newChecked.splice(currentIndex, 1);
+      setChecked(newChecked);
+    }
     setUnits(newUnits);
   };
 

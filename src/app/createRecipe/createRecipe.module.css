@@ -1,5 +1,5 @@
 .ingredientsPage {
-    background-color: antiquewhite;
+    background-color: #FFFCF4;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -51,11 +51,11 @@
     width: 400px;
     height: 46px;
     margin-bottom: 20px;
-    background: #FFFCF4;
+    background: #283D3B;
     border: 1px solid #000000;
     border-radius: 10px;
     padding: 15px;
-    color: black;
+    color: white;
     outline: none;
 }
 
@@ -64,6 +64,8 @@
 }
 
 .createbutton {
+    background-color: #283D3B;
+    color: white;
     margin-top: 20px;
     margin-bottom: 20px;
     width: 400px;
@@ -74,7 +76,7 @@
 
 .totalCost{
     box-sizing: border-box;
-    width: 200px;
+    width: 250px;
     padding: 10px;
     background: #FFFCF4;
     border: 2px solid #000000;
