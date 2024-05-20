@@ -1,13 +1,16 @@
-import mongoose, { Decimal128, Schema } from "mongoose";
+import mongoose, { Schema } from "mongoose";
+import RecipeIngredients, {IRecipeIngredient} from "./recipeIngredientSchema";
 
 export type IRecipe = {
-  recipeName: string;
-  totalCost: Decimal128;
+  recipeName: String;
+  recipeIngredients: IRecipeIngredient[]
+  totalCost: Number
 };
 
 const RecipeSchema = new Schema<IRecipe>({
-  recipeName: { type: String, required: true },
-  totalCost: { type: String, required: false}
+  recipeName: { type: String },
+  recipeIngredients: [RecipeIngredients],
+  totalCost: { type: Number },
 });
 
 const Recipes = mongoose.models["Recipes"] || mongoose.model("Recipes", RecipeSchema);

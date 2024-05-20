@@ -1,21 +1,23 @@
-import mongoose, { Decimal128, Schema } from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
 export type IIngredient = {
   ingredientName: String;
   brand: String;
   vendor: String;
   unitType: String;
-  numberUnits: Decimal128;
-  price: Decimal128;
+  numberUnits: Number;
+  price: Number;
+  pricePerUnit: Number;
 };
 
 const IngredientSchema = new Schema<IIngredient>({
-  ingredientName: { type: String, required: true },
-  brand: { type: String, required: false },
-  vendor: { type: String, required: false },
-  unitType: { type: String, required: true },
-  numberUnits: { type: String, required: true },
-  price: { type: String, required: true },
+  ingredientName: { type: String },
+  brand: { type: String },
+  vendor: { type: String },
+  unitType: { type: String },
+  numberUnits: { type: Number },
+  price: { type: Number },
+  pricePerUnit: { type: Number } 
 });
 
 const Ingredients = mongoose.models["Ingredients"] || mongoose.model("Ingredients", IngredientSchema);
