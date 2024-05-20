@@ -1,6 +1,6 @@
 "use client"
 import React, { useState } from "react";
-import styles from "./ingredients.module.css";
+import styles from "./recipeCard.module.css";
 import { Box, Button, List, ListItem, ListItemText } from "@mui/material";
 import Link from 'next/link';
 
@@ -17,7 +17,7 @@ interface Recipe {
 }
 
 interface IngredientsPageProps {
-  recipe?: Recipe; // Make the prop optional
+  recipe?: Recipe; 
 }
 
 const exampleRecipe: Recipe = {
@@ -88,7 +88,7 @@ const IngredientsPage: React.FC<IngredientsPageProps> = ({ recipe = exampleRecip
   const totalRecipeCost = calculateTotalRecipeCost(recipe);
 
   return (
-    <div className={styles.ingredientsPage}>
+    <div className={styles.page}>
       <div className={styles.ingredientBox}>
         <div className={styles.header}>
           <div className={styles.name}>
