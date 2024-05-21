@@ -1,6 +1,7 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose, { ObjectId, Schema } from "mongoose";
 
 export type IIngredient = {
+  userID: ObjectId;
   ingredientName: String;
   brand: String;
   vendor: String;
@@ -11,6 +12,7 @@ export type IIngredient = {
 };
 
 const IngredientSchema = new Schema<IIngredient>({
+  userID: { type: mongoose.Schema.Types.ObjectId },
   ingredientName: { type: String },
   brand: { type: String },
   vendor: { type: String },

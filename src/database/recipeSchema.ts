@@ -1,15 +1,32 @@
-import mongoose, { Schema } from "mongoose";
-import RecipeIngredients, {IRecipeIngredient} from "./recipeIngredientSchema";
+import mongoose, { ObjectId, Schema } from "mongoose";
+
+export type IRecipeIngredient = {
+  recipeIngredientName: String;
+  unitType: String;
+  numberUnits: Number;
+  costPerUnit: Number;
+  cost: Number;
+}
+
+const RecipeIngredientSchema = new Schema<IRecipeIngredient>({
+  recipeIngredientName: { type: String },
+  unitType: { type: String },
+  numberUnits: { type: Number },
+  costPerUnit: { type: Number },
+  cost: { type: Number },
+});
 
 export type IRecipe = {
+  userID: ObjectId;
   recipeName: String;
   recipeIngredients: IRecipeIngredient[]
   totalCost: Number
 };
 
 const RecipeSchema = new Schema<IRecipe>({
+  userID: { type: mongoose.Schema.Types.ObjectId },
   recipeName: { type: String },
-  recipeIngredients: [RecipeIngredients],
+  recipeIngredients: { type: [RecipeIngredientSchema] },
   totalCost: { type: Number },
 });
 

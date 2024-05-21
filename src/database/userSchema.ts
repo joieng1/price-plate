@@ -1,6 +1,4 @@
 import mongoose, { Schema, ObjectId } from "mongoose";
-import Recipes, { IRecipe } from "./recipeSchema";
-import Ingredients, { IIngredient } from "./ingredientSchema";
 
 export type IUser = {
   firstName: String;
@@ -8,8 +6,8 @@ export type IUser = {
   email: String;
   username: String;
   password: String;
-  recipes: IRecipe[];
-  ingredients: IIngredient[];
+  recipes: ObjectId[];
+  ingredients: ObjectId[];
 };
 
 const UserSchema = new Schema<IUser>({
@@ -18,8 +16,8 @@ const UserSchema = new Schema<IUser>({
   email: { type: String, required: true},
   username: { type: String, required: true, unique: true},
   password: { type: String, required: true},
-  recipes: [Recipes],
-  ingredients: [Ingredients]
+  recipes: [{ type: mongoose.Schema.Types.ObjectId }],
+  ingredients: [{ type: mongoose.Schema.Types.ObjectId }],
 });
 
 const Users = mongoose.models["Users"] || mongoose.model("Users", UserSchema);
