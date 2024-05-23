@@ -17,7 +17,7 @@ export async function POST(req: NextRequest) {
             password: hashedPassword, recipes: recipes, ingredients: ingredients});
         await newUser.save();
         
-        return NextResponse.json("Success: Signup Complete", { status: 201 });
+        return NextResponse.json({message: "Success: Signup Complete"}, { status: 201 });
 
     } catch (err) {
         return NextResponse.json(`${err}`, { status: 400 });
