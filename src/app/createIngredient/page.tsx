@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -42,7 +42,7 @@ interface Ingredient {
   totalPrice: number;
   unitType: string;
 }
-function createIngredientPage() {
+function CreateIngredientPage() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -50,7 +50,7 @@ function createIngredientPage() {
       vendorName: "",
       units: 0,
       totalPrice: 0,
-      unitType: "",
+      unitType: unitTypeEnum.Enum.g,
     },
   });
   const [ingredient, setIngredient] = useState<Ingredient>({
@@ -228,4 +228,4 @@ function createIngredientPage() {
   );
 }
 
-export default createIngredientPage;
+export default CreateIngredientPage;
