@@ -1,4 +1,4 @@
-const ingredientCard = () => {
+const IngredientCard = () => {
     return (
       <>
         ingredientCard
@@ -6,4 +6,4 @@ const ingredientCard = () => {
     );
   };
   
-  export default ingredientCard;
+  export default IngredientCard;

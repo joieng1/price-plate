@@ -1,4 +1,4 @@
-const createIngredientPage = () => {
+const CreateIngredientPage = () => {
     return (
       <>
         createIngredientPage
@@ -6,4 +6,4 @@ const createIngredientPage = () => {
     );
   };
   
-  export default createIngredientPage;
+  export default CreateIngredientPage;

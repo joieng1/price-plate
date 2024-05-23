@@ -1,4 +1,4 @@
-const recipePage = () => {
+const RecipePage = () => {
     return (
       <>
         recipePage
@@ -6,4 +6,4 @@ const recipePage = () => {
     );
   };
   
-  export default recipePage;
+  export default RecipePage;

@@ -1,4 +1,4 @@
-const loginPage = () => {
+const LoginPage = () => {
     return (
       <>
         loginPage
@@ -6,4 +6,4 @@ const loginPage = () => {
     );
   };
   
-  export default loginPage;
+  export default LoginPage;
