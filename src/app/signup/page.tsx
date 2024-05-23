@@ -1,7 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
 import styles from './signup.module.css';
-import Image from 'next/image';
 
 const SignUpPage = () => {
   return (
@@ -9,7 +8,7 @@ const SignUpPage = () => {
 
       {/* <Link href="/home" className={styles.logoContainer}> */}
    
-          <Image src="/logo.png" alt="Logo" className={styles.logoImage} />
+          <img src="/logo.png" alt="Logo" className={styles.logoImage} />
 
       {/* </Link> */}
 

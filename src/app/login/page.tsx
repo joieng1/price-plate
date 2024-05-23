@@ -1,7 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
 import styles from './login.module.css';
-import Image from 'next/image';
 
 const LoginPage = () => {
   return (
@@ -9,7 +8,7 @@ const LoginPage = () => {
       <div className={styles.loginBackground}>
 
       <div className={styles.logoContainer}>
-          <Image src="/logo.png" alt="Logo" className={styles.logoImage} />
+          <img src="/logo.png" alt="Logo" className={styles.logoImage} />
         </div>
 
         <div className="flex flex-col items-center">
