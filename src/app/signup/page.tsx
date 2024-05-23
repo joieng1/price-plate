@@ -6,12 +6,6 @@ const SignUpPage = () => {
   return (
     <div className={styles.signUpBackground}>
 
-      {/* <Link href="/home" className={styles.logoContainer}> */}
-   
-          <img src="/logo.png" alt="Logo" className={styles.logoImage} />
-
-      {/* </Link> */}
-
       <div className="flex flex-col items-center">
         <div className={styles.signUpContainer}>
           <label htmlFor="firstname" className="text-black">First Name</label>
