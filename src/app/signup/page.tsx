@@ -1,13 +1,17 @@
 import React from 'react';
 import Link from 'next/link';
 import styles from './signup.module.css';
+import Image from 'next/image';
 
 const SignUpPage = () => {
   return (
     <div className={styles.signUpBackground}>
-      <div className={styles.logoContainer}>
-        <img src="/logo.png" alt="Logo" className={styles.logoImage} />
-      </div>
+
+      {/* <Link href="/home" className={styles.logoContainer}> */}
+   
+          <Image src="/logo.png" alt="Logo" className={styles.logoImage} />
+
+      {/* </Link> */}
 
       <div className="flex flex-col items-center">
         <div className={styles.signUpContainer}>
