@@ -162,7 +162,7 @@ function createIngredientPage() {
                           render={({ field }) => (
                             <DropdownMenu>
                               <DropdownMenuTrigger className="w-[10rem]">
-                                <div className="border-[1.5px] border-gray-300 rounded-md p-1">
+                                <div className="border-[1.5px] border-gray-300 rounded-md p-1 cursor-pointer">
                                   {field.value || "Select Unit Type"}
                                 </div>
                               </DropdownMenuTrigger>
