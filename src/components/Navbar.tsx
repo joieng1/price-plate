@@ -23,7 +23,7 @@ export default function Navbar() {
           height={100}
         />
       </Link>
-      <div className="item-center justify center align-items-center px-5">
+      <div className="item-center justify center align-items-center px-5 w-full">
         <DropdownMenu>
           <DropdownMenuTrigger>
             <svg
@@ -42,7 +42,7 @@ export default function Navbar() {
               ></path>
             </svg>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="mt-4">
+          <DropdownMenuContent className="mt-[26px]l">
             <DropdownMenuItem className="text-4xl text-white">
             <Link href="/home">Home</Link>
             </DropdownMenuItem>
