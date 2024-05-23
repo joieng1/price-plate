@@ -42,7 +42,7 @@ export default function Navbar() {
               ></path>
             </svg>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="mt-[26px]l">
+          <DropdownMenuContent className="mt-[26px] w-[100vh]">
             <DropdownMenuItem className="text-4xl text-white">
             <Link href="/home">Home</Link>
             </DropdownMenuItem>
