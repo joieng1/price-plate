@@ -49,10 +49,15 @@ const LoginPage = () => {
   return (
     <>
       <div className={styles.loginBackground}>
-
-      <div className={styles.logoContainer}>
-          <img src="/logo.png" alt="Logo" className={styles.logoImage} />
-        </div>
+        <Link href="/" className={styles.logoContainer}>
+          <Image
+            src="/logo.png"
+            alt="Logo"
+            width={100}
+            height={100}
+            className={styles.logoImage}
+          />
+        </Link>
 
         <div className="flex flex-col items-center">
           <form onSubmit={handleLogin}>
