@@ -38,23 +38,31 @@
     background-color: #fff;
     border-radius: 4px;
     color: black;
+    margin-top: 10px
   }
   
   .signupLink {
     color: #0077cc;
     margin-top: 8px;
   }
+
+  .loginButtonContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
   
   .loginButton {
     background-color: #283D3B;
     color: white;
     border: none;
-    padding: 10px 20px;
+    padding: 15px 40px;
     border-radius: 4px;
     cursor: pointer;
     display: flex;
     justify-content: center;
     align-items: center;
     margin-top: 20px;
+    margin-bottom: 10px;
   }
   

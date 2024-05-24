@@ -84,7 +84,9 @@ const LoginPage = () => {
                 className={styles.loginInput}
               />
             </div>
-            <input type="submit" className={styles.loginButton} value="Login"/>
+            <div className={styles.loginButtonContainer}>
+              <input type="submit" className={styles.loginButton} value="Login"/>
+            </div>
           </form>
           <a href="signup" className={styles.signupLink}>New to PricePlate? Click here to create an account</a>
         </div> 
