@@ -13,14 +13,24 @@ export async function verifyToken(req: NextRequest) {
   }
 
   try {
-    const decoded = await new Promise((resolve, reject) => {
-      jwt.verify(token, process.env.TOKEN_SECRET, (error: Error | null, token: string | undefined) => {
-        if (error) reject(error);
-        resolve(decoded);
-      });
-    });
-    return NextResponse.next();
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    return NextResponse.json({ message: "Authorized"}, {status: 202});
   } catch (error) {
+    console.log(error)
     return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
   }
+}
+
+export function generateAccessToken(username: string): Promise<string> {
+  return new Promise((resolve, reject) => {
+    jwt.sign(
+      { username },
+      process.env.JWT_SECRET as string,
+      { expiresIn: '1d' },
+      (error: Error | null, token: string | undefined) => {
+        if (error) reject(error);
+        else resolve(token as string);
+      }
+    );
+  });
 }

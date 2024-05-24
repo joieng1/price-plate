@@ -3,21 +3,22 @@ import { NextRequest, NextResponse } from "next/server";
 import Users from "@/database/userSchema";
 const bcrypt = require("bcrypt");
 const jwt = require('jsonwebtoken');
-import { verifyToken } from "@/middleware/auth";
+import { generateAccessToken, verifyToken } from "@/middleware/auth";
 
 export async function POST(req: NextRequest) {
   
   await connectDB();
-  
-  // const authResult = await verifyToken(req);
-  // if (authResult instanceof NextResponse) {
-  //   return authResult;
-  // }
+  let user;
+  let errorMessage = null;
+
+  const authResult = await verifyToken(req);
+  if (authResult.status == 401) {
+    errorMessage = "An error occurred. Please try again later.";
+    return  NextResponse.json({message: errorMessage}, {status: 401})
+  }
 
   try {
     const { username, password } = await req.json();
-    let user;
-    let errorMessage = null;
     
     if (!process.env.JWT_SECRET) {
       errorMessage = "An error occurred. Please try again later.";
@@ -49,16 +50,3 @@ export async function POST(req: NextRequest) {
   }
 }
 
-function generateAccessToken(username: string): Promise<string> {
-  return new Promise((resolve, reject) => {
-    jwt.sign(
-      { username },
-      process.env.JWT_SECRET as string,
-      { expiresIn: '1d' },
-      (error: Error | null, token: string | undefined) => {
-        if (error) reject(error);
-        else resolve(token as string);
-      }
-    );
-  });
-}

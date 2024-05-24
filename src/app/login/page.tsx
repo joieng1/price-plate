@@ -13,18 +13,19 @@ const LoginPage = () => {
   const handleLogin = async(e: React.FormEvent) => {
     try{
       e.preventDefault()
+      const token = localStorage.getItem('jwtToken');
       const response = await fetch('/api/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({ username, password }),
       });
 
       const responseData = await response.json();
       if(response.ok){
-        const token = responseData.token;
-        localStorage.setItem("jwtToken", token);
+        localStorage.setItem("jwtToken", responseData.token);
         push('/home')
       }
 
