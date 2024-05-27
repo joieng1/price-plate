@@ -1,9 +1,52 @@
-import React from "react";
+"use client"
+import React, {useState} from 'react';
 import Link from "next/link";
-import styles from "./login.module.css";
-import Image from "next/image";
+import Image from "next/image"
+import { useRouter } from "next/navigation";
+import styles from './login.module.css';
 
 const LoginPage = () => {
+  const [username, setUsername] = useState<string>('');
+  const [password, setPassword] = useState<string>('');
+  const { push } = useRouter();
+
+  const handleLogin = async(e: React.FormEvent) => {
+    try{
+      e.preventDefault()
+      const response = await fetch('/api/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ username, password }),
+      });
+
+      const responseData = await response.json();
+      if(response.ok){
+        localStorage.setItem("jwtToken", responseData.token);
+        push('/home')
+      }
+
+      else{
+        const errorMessage = responseData.message;
+        if(errorMessage == "Failed: Login Incomplete"){
+          alert("Incomplete Fields");
+        }
+        else if(errorMessage == "Failed: Login Failed"){
+          alert("Incorrect Email or Password");
+        }
+        else{
+          alert("Login Error");
+        }
+      }
+         
+    }
+    catch (error) {
+      console.error("Login Error", error);
+    }
+
+  }
+
   return (
     <>
       <div className={styles.loginBackground}>
@@ -18,30 +61,35 @@ const LoginPage = () => {
         </Link>
 
         <div className="flex flex-col items-center">
-          <div className={styles.loginContainer}>
-            <label htmlFor="username" className="text-black">
-              Username
-            </label>
-            <input type="text" id="username" className={styles.loginInput} />
-          </div>
+          <form onSubmit={handleLogin}>
+            <div className={styles.loginContainer}>
+              <label htmlFor="username" className="text-black">Username</label>
+              <input
+                type="text"
+                id="username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                className={styles.loginInput}
+              />
+            </div>
 
-          <div className={styles.loginContainer}>
-            <label htmlFor="password" className="text-black">
-              Password
-            </label>
-            <input
-              type="password"
-              id="password"
-              className={styles.loginInput}
-            />
-          </div>
-          <a href="signup" className={styles.signupLink}>
-            New to PricePlate? Click here to create an account
-          </a>
-          <Link href="/home">
-            <button className={styles.loginButton}>Login</button>
-          </Link>
-        </div>
+            <div className={styles.loginContainer}>
+              <label htmlFor="password" className="text-black">Password</label>
+              <input
+                type="password"
+                id="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className={styles.loginInput}
+              />
+            </div>
+            <div className={styles.loginButtonContainer}>
+              <input type="submit" className={styles.loginButton} value="Login"/>
+            </div>
+          </form>
+          <a href="signup" className={styles.signupLink}>New to PricePlate? Click here to create an account</a>
+        </div> 
+
       </div>
     </>
   );
