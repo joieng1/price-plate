@@ -2,6 +2,7 @@ import connectDB from "@/database/db";
 import { NextRequest, NextResponse } from "next/server";
 import Users, { IUser } from "@/database/userSchema";
 const bcrypt = require("bcrypt");
+import { generateAccessToken } from "@/middleware/auth";
 
 export async function POST(req: NextRequest) {
     await connectDB();
@@ -17,7 +18,9 @@ export async function POST(req: NextRequest) {
             password: hashedPassword, recipes: recipes, ingredients: ingredients});
         await newUser.save();
         
-        return NextResponse.json({message: "Success: Signup Complete"}, { status: 201 });
+        const token = await generateAccessToken(username.toString());
+        console.log("Generated Token and Signup Success");
+        return NextResponse.json({message: "Success: Signup Complete", token}, { status: 201 });
 
     } catch (err) {
         return NextResponse.json(`${err}`, { status: 400 });

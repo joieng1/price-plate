@@ -34,7 +34,8 @@ const SignUpPage = () => {
       const responseData = await response.json();
 
       if (response.ok) {
-        push("/login");
+        localStorage.setItem("jwtToken", responseData.token);
+        push("/home");
       } 
       else if (responseData.message === "Failed: Invalid User") {
         alert("Incomplete Fields");
@@ -51,12 +52,10 @@ const SignUpPage = () => {
 
   return (
     <div className={styles.signUpBackground}>
-
-      {/* <Link href="/home" className={styles.logoContainer}> */}
-   
-          <img src="/logo.png" alt="Logo" className={styles.logoImage} />
-
-      {/* </Link> */}
+      
+      <Link href="/home" className={styles.logoContainer}>
+          <img src="/logo.png" alt="Logo" height={100} width={100}/>
+      </Link>
 
       <div className="flex flex-col items-center">
         <form onSubmit={handleSignUp}>
@@ -85,8 +84,8 @@ const SignUpPage = () => {
           <input type="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} className={styles.signUpInput} />
         </div>
         
-        <a href="login" className={styles.linkBlue}>Already have an account? Click here to log in</a>
         <input type="submit" className={styles.signUpButton} value="Sign Up"/>
+        <a href="login" className={styles.linkBlue}>Already have an account? Click here to log in</a>
 
         </form>
       </div>
