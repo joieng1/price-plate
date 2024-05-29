@@ -1,9 +1,52 @@
-const IngredientCard = () => {
-    return (
-      <>
-        ingredientCard
-      </>
-    );
+"use client";
+import React, {FunctionComponent} from "react";
+import styles from "./ingredientCard.module.css";
+
+interface IngredientAttributes {
+  ingredient_name: string;
+  price: string;
+  cost_per_unit: string;
+  vendor: string;
+  total_amount: string;
+}
+
+
+const default_ingredients: IngredientAttributes = 
+  {
+    ingredient_name: "Ingredient",
+    price: "Price",
+    cost_per_unit: "cost / unit",
+    vendor: "vendor",
+    total_amount: "Total Amount"
   };
-  
-  export default IngredientCard;
+
+
+ function IngredientCardHelper({ ingredient }: {ingredient: IngredientAttributes}) {
+  return (
+    <div className={styles.ingredientsCard}>
+      <div className={styles.separateBox}>
+        <p className={styles.blackFont}>{ingredient.ingredient_name}</p>
+      </div>
+      <div className={styles.boxContainer}>
+        <div className={styles.box}>
+          <p className={styles.blackFont}>{ingredient.price}</p>
+        </div>
+        <div className={styles.box}>
+          <p className={styles.blackFont}>{ingredient.cost_per_unit}</p>
+        </div>
+        <div className={styles.box}>
+          <p className={styles.blackFont}>{ingredient.vendor}</p>
+        </div>
+        <div className={styles.box}>
+          <p className={styles.blackFont}>{ingredient.total_amount}</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default function IngredientCard() {
+  return (
+    <IngredientCardHelper ingredient={default_ingredients}/>
+  )
+}
