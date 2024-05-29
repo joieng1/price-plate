@@ -1,5 +1,5 @@
-// use client";
-import React, { FunctionComponent } from "react";
+"use client";
+import React, { FunctionComponent, useState } from "react";
 import styles from "./ingredientCard.module.css";
 
 interface IngredientAttributes {
@@ -42,11 +42,9 @@ function IngredientCardHelper({ ingredient }: { ingredient: IngredientAttributes
   );
 }
 
-interface IngredientCardProps {
-  ingredient?: IngredientAttributes;
-}
+const IngredientCard: FunctionComponent = () => {
+  const [ingredient, setIngredient] = useState<IngredientAttributes>(defaultIngredient);
 
-const IngredientCard: FunctionComponent<IngredientCardProps> = ({ ingredient = defaultIngredient }) => {
   return <IngredientCardHelper ingredient={ingredient} />;
 };
 

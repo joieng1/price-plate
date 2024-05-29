@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import React, { useState } from "react";
 import styles from "./recipeCard.module.css";
 import { Box, Button, List, ListItem, ListItemText } from "@mui/material";
@@ -14,10 +14,6 @@ interface Ingredient {
 interface Recipe {
   recipeName: string;
   ingredients: Ingredient[];
-}
-
-interface RecipeCardProps {
-  recipe?: Recipe;
 }
 
 const defaultRecipe: Recipe = {
@@ -64,7 +60,7 @@ const SearchBar = ({ onChange, value }: { onChange: (e: React.ChangeEvent<HTMLIn
   );
 };
 
-function RecipeCardHelper({ recipe = defaultRecipe }: RecipeCardProps) {
+function RecipeCardHelper({ recipe }: { recipe: Recipe }) {
   const [searchInput, setSearchInput] = useState<string>("");
 
   // Calculate the total cost of ingredients before rendering
@@ -105,7 +101,9 @@ function RecipeCardHelper({ recipe = defaultRecipe }: RecipeCardProps) {
   );
 }
 
-const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
+const RecipeCard = () => {
+  const [recipe, setRecipe] = useState<Recipe>(defaultRecipe);
+
   return <RecipeCardHelper recipe={recipe} />;
 };
 
