@@ -9,7 +9,7 @@ const ClientLayout = ({
   children: React.ReactNode;
 }>) => {
   const pathname = usePathname();
-  const hideNavbarPaths = ["/login", "/signup"]; // Add paths where the navbar should not be rendered
+  const hideNavbarPaths = ["/login", "/signup","/"]; // Add paths where the navbar should not be rendered
 
   return (
     <>
