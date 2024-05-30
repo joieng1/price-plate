@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useState } from "react";
 import styles from "./recipeCard.module.css";
 import { Box, Button, List, ListItem, ListItemText } from "@mui/material";
@@ -16,11 +16,7 @@ interface Recipe {
   ingredients: Ingredient[];
 }
 
-interface IngredientsPageProps {
-  recipe?: Recipe; 
-}
-
-const exampleRecipe: Recipe = {
+const defaultRecipe: Recipe = {
   recipeName: "Chocolate Cake",
   ingredients: [
     { ingredientName: 'Flour', unit_cost: 2.99, units: 2, total_cost: 0 },
@@ -45,10 +41,9 @@ function IngredientsList({ ingredients }: { ingredients: Ingredient[] }) {
       <List>
         {ingredients.map((ingredient, index) => (
           <ListItem key={index} className={styles.ingredient}>
-            <ListItemText className={styles.ingredientfield}
-              primary={`${ingredient.ingredientName}`}
-              secondary={`${ingredient.units} units`} />
-            <p className={styles.totalcost}>Total Cost: ${ingredient.total_cost.toFixed(2)}</p> {/* Display total cost */}
+            <ListItemText className={styles.ingredientfield} primary={`${ingredient.ingredientName}`} secondary={`${ingredient.units} units`} />
+            <p className={styles.totalcost}>Total Cost: ${ingredient.total_cost.toFixed(2)}</p>
+            {/* Display total cost */}
             <Link href="/recipeCard">
               <Button variant="contained" className={styles.moreinfo}>More Info</Button>
             </Link>
@@ -61,17 +56,11 @@ function IngredientsList({ ingredients }: { ingredients: Ingredient[] }) {
 
 const SearchBar = ({ onChange, value }: { onChange: (e: React.ChangeEvent<HTMLInputElement>) => void, value: string }) => {
   return (
-    <input
-      type="search"
-      className={styles.search}
-      placeholder="Search Ingredient"
-      onChange={onChange}
-      value={value}
-    />
+    <input type="search" className={styles.search} placeholder="Search Ingredient" onChange={onChange} value={value} />
   );
 };
 
-function RecipeCardHelper({ recipe }: {recipe: Recipe}) {
+function RecipeCardHelper({ recipe }: { recipe: Recipe }) {
   const [searchInput, setSearchInput] = useState<string>("");
 
   // Calculate the total cost of ingredients before rendering
@@ -112,9 +101,10 @@ function RecipeCardHelper({ recipe }: {recipe: Recipe}) {
   );
 }
 
-export default function RecipeCard() {
-  return (
-    <RecipeCardHelper recipe={exampleRecipe}/>
-  )
-}
+const RecipeCard = () => {
+  const [recipe, setRecipe] = useState<Recipe>(defaultRecipe);
 
+  return <RecipeCardHelper recipe={recipe} />;
+};
+
+export default RecipeCard;

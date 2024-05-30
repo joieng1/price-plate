@@ -1,5 +1,5 @@
 "use client";
-import React, {FunctionComponent} from "react";
+import React, { FunctionComponent, useState } from "react";
 import styles from "./ingredientCard.module.css";
 
 interface IngredientAttributes {
@@ -10,18 +10,15 @@ interface IngredientAttributes {
   total_amount: string;
 }
 
+const defaultIngredient: IngredientAttributes = {
+  ingredient_name: "Ingredient",
+  price: "Price",
+  cost_per_unit: "cost / unit",
+  vendor: "vendor",
+  total_amount: "Total Amount",
+};
 
-const default_ingredients: IngredientAttributes = 
-  {
-    ingredient_name: "Ingredient",
-    price: "Price",
-    cost_per_unit: "cost / unit",
-    vendor: "vendor",
-    total_amount: "Total Amount"
-  };
-
-
- function IngredientCardHelper({ ingredient }: {ingredient: IngredientAttributes}) {
+function IngredientCardHelper({ ingredient }: { ingredient: IngredientAttributes }) {
   return (
     <div className={styles.ingredientsCard}>
       <div className={styles.separateBox}>
@@ -45,8 +42,10 @@ const default_ingredients: IngredientAttributes =
   );
 }
 
-export default function IngredientCard() {
-  return (
-    <IngredientCardHelper ingredient={default_ingredients}/>
-  )
-}
+const IngredientCard: FunctionComponent = () => {
+  const [ingredient, setIngredient] = useState<IngredientAttributes>(defaultIngredient);
+
+  return <IngredientCardHelper ingredient={ingredient} />;
+};
+
+export default IngredientCard;
