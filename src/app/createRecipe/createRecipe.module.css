@@ -1,0 +1,90 @@
+.ingredientsPage {
+    background-color: #FFFCF4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.ingredientBox {
+    box-sizing: border-box;
+    width: 925px;
+    padding: 20px;
+    background: #9DB4AB;
+    border: 1px solid #000000;
+    box-shadow: -10px 10px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-height: 90vh;
+    overflow-y: auto; 
+}
+
+.ingredient {
+    width: 100%;
+    margin-right: 150px;
+    margin-bottom: 10px;
+    background: #fffcf4;
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: -10px 10px 4px rgba(0, 0, 0, 0.25);
+}
+
+.ingredientContent {
+    display: flex;
+    flex-grow: 1;
+    align-items: center;
+    gap: 16px;
+}
+
+.ingredientName {
+    margin-right: 60px;
+}
+
+.secondaryAction {
+    display: flex;
+    align-items: center;
+}
+
+.search {
+    width: 400px;
+    height: 46px;
+    margin-bottom: 20px;
+    background: #283D3B;
+    border: 1px solid #000000;
+    border-radius: 10px;
+    padding: 15px;
+    color: white;
+    outline: none;
+}
+
+.search:focus {
+    border-color: #579eea;
+}
+
+.createbutton {
+    background-color: #283D3B;
+    color: white;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    width: 400px;
+    height: 60px;
+    border: 1px solid #000000;
+    border-radius: 10px;
+}
+
+.totalCost{
+    box-sizing: border-box;
+    width: 250px;
+    padding: 10px;
+    background: #FFFCF4;
+    border: 2px solid #000000;
+    box-shadow: -10px 10px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 10px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
