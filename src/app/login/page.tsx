@@ -24,6 +24,7 @@ const LoginPage = () => {
       const responseData = await response.json();
       if(response.ok){
         localStorage.setItem("jwtToken", responseData.token);
+        localStorage.setItem("userID", responseData.userID);
         push('/home')
       }
 
@@ -39,7 +40,6 @@ const LoginPage = () => {
           alert("Login Error");
         }
       }
-         
     }
     catch (error) {
       console.error("Login Error", error);
