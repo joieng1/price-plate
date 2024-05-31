@@ -40,17 +40,17 @@ export async function PUT(req: NextRequest, { params }: any) {
 //delete recipe
 export async function DELETE(req: NextRequest, { params }: any) {
   await connectDB();
-  const { recipeId } = params;
+  const { id } = params;
   try {
-    const recipe = await Recipes.findById(recipeId);
+    const recipe = await Recipes.findById(id);
 
     if (!recipe) {
       return NextResponse.json({ message: "Recipe not found" }, { status: 404 });
     }
 
-    await Recipes.findByIdAndDelete(recipeId);
+    await Recipes.findByIdAndDelete(id);
     await Users.findByIdAndUpdate(recipe.userId,
-      { $pull: { recipes: recipeId } }
+      { $pull: { recipes: id } }
     )
     return NextResponse.json({ message: "Deleted" });
   } catch (error) {
