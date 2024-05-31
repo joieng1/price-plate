@@ -13,7 +13,6 @@ export async function GET(req: NextRequest, { params }: any) {
     }
     const verifytoken = await authenticateUser(req);
     const jsonData = await verifytoken.json();
-    console.log("Json data: ",jsonData)
     if (jsonData.message != 'Authorized') {
       return NextResponse.json(
         { message: "Failed: Unauthorized" },
@@ -42,7 +41,6 @@ export async function PUT(req: NextRequest, { params }: any) {
     }
     const verifytoken = await authenticateUser(req);
     const jsonData = await verifytoken.json();
-    console.log("Json data: ",jsonData)
     if (jsonData.message != 'Authorized') {
       return NextResponse.json(
         { message: "Failed: Unauthorized" },
@@ -76,7 +74,6 @@ export async function DELETE(req: NextRequest, { params }: any) {
     }
     const verifytoken = await authenticateUser(req);
     const jsonData = await verifytoken.json();
-    console.log("Json data: ",jsonData)
     if (jsonData.message != 'Authorized') {
       return NextResponse.json(
         { message: "Failed: Unauthorized" },
@@ -93,7 +90,8 @@ export async function DELETE(req: NextRequest, { params }: any) {
     }
 
     await Recipes.findByIdAndDelete(id);
-    await Users.findByIdAndUpdate(recipe.userId, { $pull: { recipes: id } });
+    console.log("user id", recipe.userId)
+    await Users.findByIdAndUpdate(recipe.userID, { $pull: { recipes: id } });
     return NextResponse.json({ message: "Deleted" });
   } catch (error) {
     return NextResponse.json({ message: "Failed to delete" }, { status: 500 });
