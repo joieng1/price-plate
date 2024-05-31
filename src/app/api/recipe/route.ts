@@ -2,12 +2,30 @@ import { NextRequest, NextResponse } from "next/server";
 import connectDB from "@/database/db";
 import Recipes from "@/database/recipeSchema";
 import Users from "@/database/userSchema";
+import { authenticateUser } from "@/middleware/auth";
 
 export async function POST(req: NextRequest) {
   await connectDB();
   try {
     const { userID, recipeName, recipeIngredients, totalCost } =
       await req.json();
+
+    //authorization check
+    if (!process.env.JWT_SECRET) {
+      return NextResponse.json(
+        { message: "An error occurred. Please try again later." },
+        { status: 400 }
+      );
+    }
+    const verifytoken = await authenticateUser(req);
+    const jsonData = await verifytoken.json();
+    if (jsonData.message != "Authorized") {
+      return NextResponse.json(
+        { message: "Failed: Unauthorized" },
+        { status: 401 }
+      );
+    }
+
     const newRecipe = await new Recipes({
       userID,
       recipeName,
@@ -36,6 +54,22 @@ export async function POST(req: NextRequest) {
 export async function GET(req: NextRequest, res: NextResponse) {
   await connectDB();
   try {
+    //authorization check
+    if (!process.env.JWT_SECRET) {
+      return NextResponse.json(
+        { message: "An error occurred. Please try again later." },
+        { status: 400 }
+      );
+    }
+    const verifytoken = await authenticateUser(req);
+    const jsonData = await verifytoken.json();
+    if (jsonData.message != "Authorized") {
+      return NextResponse.json(
+        { message: "Failed: Unauthorized" },
+        { status: 401 }
+      );
+    }
+
     const recipes = await Recipes.find().exec();
     return NextResponse.json(recipes);
   } catch (error) {
