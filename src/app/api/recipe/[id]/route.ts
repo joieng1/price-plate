@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import connectDB from "@/database/db";
 import Recipes from "@/database/recipeSchema";
+import Users from "@/database/userSchema"
 
 // returns specific recipe
 export async function GET(req: NextRequest, { params }: any) {
@@ -39,9 +40,18 @@ export async function PUT(req: NextRequest, { params }: any) {
 //delete recipe
 export async function DELETE(req: NextRequest, { params }: any) {
   await connectDB();
-  const { id } = params;
+  const { recipeId } = params;
   try {
-    await Recipes.findByIdAndDelete(id);
+    const recipe = await Recipes.findById(recipeId);
+
+    if (!recipe) {
+      return NextResponse.json({ message: "Recipe not found" }, { status: 404 });
+    }
+
+    await Recipes.findByIdAndDelete(recipeId);
+    await Users.findByIdAndUpdate(recipe.userId,
+      { $pull: { recipes: recipeId } }
+    )
     return NextResponse.json({ message: "Deleted" });
   } catch (error) {
     return NextResponse.json({ message: "Failed to delete" }, { status: 500 });
