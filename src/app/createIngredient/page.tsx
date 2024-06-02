@@ -27,58 +27,74 @@ const unitTypeEnum = z.enum(["kg", "lb", "oz", "g"]);
 
 const formSchema = z.object({
   ingredientName: z.string().min(1, "Ingredient name must not be empty"),
+  brand: z.string().min(1, "Vendor name must not be empty"),
   vendorName: z.string().min(1, "Vendor name must not be empty"),
-  units: z.coerce.number().min(0, "Units must be greater or equal to 0"),
-  totalPrice: z.coerce
-    .number()
-    .min(0, "Total price must be greater or equal to 0"),
   unitType: unitTypeEnum,
+  numberUnits: z.coerce.number().min(0, "Units must be greater or equal to 0"),
+  price: z.coerce
+    .number()
+    .min(0, "Price must be greater or equal to 0"),
 });
 
 interface Ingredient {
+  userID: string;
   ingredientName: string;
+  brand: string,
   vendorName: string;
-  units: number;
-  totalPrice: number;
   unitType: string;
+  numberUnits: number;
+  price: number;
+  pricePerUnit: number;
 }
 function CreateIngredientPage() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       ingredientName: "",
+      brand: "",
       vendorName: "",
-      units: 0,
-      totalPrice: 0,
       unitType: unitTypeEnum.Enum.g,
+      numberUnits: 0,
+      price: 0,
     },
   });
   const [ingredient, setIngredient] = useState<Ingredient>({
+    userID: localStorage.getItem("userID")!.toString(),
     ingredientName: "",
+    brand: "",
     vendorName: "",
-    units: 0,
-    totalPrice: 0,
     unitType: "",
+    numberUnits: 0,
+    price: 0,
+    pricePerUnit: 0,
   });
 
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {
-    setIngredient((ingredientFields) => ({
-      ...ingredientFields,
-      ingredientName: values.ingredientName,
-      vendorName: values.vendorName,
-      units: values.units,
-      totalPrice: values.totalPrice,
-      unitType: values.unitType,
-    }));
+    const pricePerUnit = values.price / values.numberUnits;
 
+    const updatedIngredient = {
+      ...ingredient,
+      ingredientName: values.ingredientName,
+      brand: values.brand,
+      vendor: values.vendorName,
+      unitType: values.unitType,
+      numberUnits: values.numberUnits,
+      price: values.price,
+      pricePerUnit,
+    };
+
+    setIngredient(updatedIngredient);
+
+    const token = localStorage.getItem("jwtToken");
     try {
       // need to update
-      const response = await fetch("/api/test", {
-        method: "GET",
+      const response = await fetch("/api/ingredient", {
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(ingredient),
+        body: JSON.stringify(updatedIngredient),
       });
 
       if (!response.ok) {
@@ -127,6 +143,26 @@ function CreateIngredientPage() {
           />
           <FormField
             control={form.control}
+            name="brand"
+            render={({ field }) => {
+              return (
+                <FormItem className="my-5">
+                  <FormLabel className="text-[2rem]">Brand</FormLabel>
+                  <FormControl>
+                    <Input
+                      className="text-[1.2rem] bg-[#FFFCF4]"
+                      placeholder="Brand Name"
+                      type="string"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              );
+            }}
+          />
+          <FormField
+            control={form.control}
             name="vendorName"
             render={({ field }) => {
               return (
@@ -147,7 +183,7 @@ function CreateIngredientPage() {
           />
           <FormField
             control={form.control}
-            name="units"
+            name="numberUnits"
             render={({ field }) => (
               <FormItem className="my-5 flex flex-col">
                 <FormLabel className="text-[2rem]">Units</FormLabel>
@@ -192,11 +228,11 @@ function CreateIngredientPage() {
           />
           <FormField
             control={form.control}
-            name="totalPrice"
+            name="price"
             render={({ field }) => {
               return (
                 <FormItem className="my-5 flex flex-col">
-                  <FormLabel className="text-[2rem]">Total Price</FormLabel>
+                  <FormLabel className="text-[2rem]">Price</FormLabel>
                   <FormControl>
                     {/* <Input placeholder="Units" type="number" {...field} /> */}
                     <OutlinedInput
@@ -221,7 +257,7 @@ function CreateIngredientPage() {
             >
               Submit
             </Button>
-          </div>
+          </div>∫
         </form>
       </Form>
     </div>
