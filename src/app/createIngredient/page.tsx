@@ -59,7 +59,7 @@ function CreateIngredientPage() {
     },
   });
   const [ingredient, setIngredient] = useState<Ingredient>({
-    userID: localStorage.getItem("userID")!.toString(),
+    userID: "",
     ingredientName: "",
     brand: "",
     vendorName: "",
@@ -110,9 +110,11 @@ function CreateIngredientPage() {
     }
   };
 
+  // access localStorage on client side
   useEffect(() => {
-    console.log("Updated ingredients:", ingredient);
-  }, [ingredient]);
+    const userID = localStorage.getItem("userID")?.toString() || "";
+    setIngredient((prev) => ({ ...prev, userID }));
+  }, []);
 
   return (
     <div className="min-h-screen w-full bg-[antiquewhite] grid place-items-center pt-10">
