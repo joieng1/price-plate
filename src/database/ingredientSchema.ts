@@ -13,7 +13,7 @@ export type IIngredient = {
 
 const IngredientSchema = new Schema<IIngredient>({
   userID: { type: mongoose.Schema.Types.ObjectId },
-  ingredientName: { type: String },
+  ingredientName: { type: String, unique: true},
   brand: { type: String },
   vendor: { type: String },
   unitType: { type: String },

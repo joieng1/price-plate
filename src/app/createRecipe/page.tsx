@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from './createRecipe.module.css';
 import { Box, Button, List, ListItem, ListItemText, Checkbox, ListItemSecondaryAction, TextField } from "@mui/material";
 import Link from 'next/link';
@@ -9,15 +9,6 @@ interface CreatedIngredient {
   unitType: string;
   pricePerUnit: number;
 }
-
-const createdingredientList: CreatedIngredient[] = [
-  { ingredientName: 'Flour', unitType: 'kg', pricePerUnit: 5.99 },
-  { ingredientName: 'Sugar', unitType: 'pound', pricePerUnit: 4.49 },
-  { ingredientName: 'Eggs', unitType: 'dozen', pricePerUnit: 3.99 },
-  { ingredientName: 'Bread', unitType: 'loaf', pricePerUnit: 5.35 },
-  { ingredientName: 'Apples', unitType: 'apple', pricePerUnit: 0.82 },
-  // { ingredientName: 'Sourdough', unitType: 'loaf', pricePerUnit: 3.43 },
-];
 
 function CreatedIngredientsList({ ingredientList, checked, handleToggle, handleUnitChange, units }: {
   ingredientList: CreatedIngredient[];
@@ -83,6 +74,36 @@ const CreateRecipePage = () => {
   const [searchInput, setSearchInput] = useState<string>("");
   const [checked, setChecked] = useState<string[]>([]);
   const [units, setUnits] = useState<{ [key: string]: number }>({});
+  const [createdIngredients, setIngredients] = useState<CreatedIngredient[]>([]);
+
+  useEffect(() => {
+    const fetchIngredients = async () => {
+      try{
+        const token = localStorage.getItem('jwtToken');
+        const userID = localStorage.getItem('userID');
+
+        const response = await fetch(`/api/ingredient?userID=${userID}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          },
+        });
+
+        if(!response.ok){
+          throw new Error('Failed to fetch ingredients');
+        }
+
+        const data = await response.json();
+        setIngredients(data);
+      }
+      catch(error){
+        console.error('Error fetching ingredients:', error);
+      }
+    };
+
+    fetchIngredients();
+  }, []);
 
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchInput(e.target.value);
@@ -112,12 +133,12 @@ const CreateRecipePage = () => {
     setUnits(newUnits);
   };
 
-  const filteredIngredients = createdingredientList.filter((ingredient) => {
+  const filteredIngredients = createdIngredients.filter((ingredient) => {
     return ingredient.ingredientName.toLowerCase().includes(searchInput.toLowerCase());
   });
 
   const totalCost = Object.keys(units).reduce((sum, key) => {
-    const ingredient = createdingredientList.find(i => i.ingredientName === key);
+    const ingredient = createdIngredients.find(i => i.ingredientName === key);
     if (ingredient && checked.includes(ingredient.ingredientName)) {
       return sum + (ingredient.pricePerUnit * (units[key] || 0));
     }
