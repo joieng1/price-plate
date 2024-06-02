@@ -259,7 +259,7 @@ function CreateIngredientPage() {
             >
               Submit
             </Button>
-          </div>∫
+          </div>
         </form>
       </Form>
     </div>
