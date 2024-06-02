@@ -73,7 +73,8 @@ export default function IngredientsPage() {
     };
 
     fetchIngredients();
-  });
+  }, []);
+
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchInput(e.target.value);
