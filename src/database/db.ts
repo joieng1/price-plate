@@ -11,9 +11,16 @@ let connection: typeof mongoose;
  * @returns {Promise<typeof mongoose>}
  */
 const connectDB = async () => {
-  if (!connection) {
-    connection = await mongoose.connect(url);
-    return connection;
+  if (mongoose.connections[0].readyState) {
+    console.log('MongoDB Already connected.');
+    return;
+  }
+  try {
+    await mongoose.connect(url);
+    console.log('MongoDB connected successfully.');
+  } catch (error) {
+    console.error('MongoDB connection error:', error);
+    throw new Error('MongoDB connection failed.');
   }
 };
 
