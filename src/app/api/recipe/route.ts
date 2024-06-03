@@ -53,6 +53,10 @@ export async function POST(req: NextRequest) {
 // returns all recipes
 export async function GET(req: NextRequest, res: NextResponse) {
   await connectDB();
+
+  const url = new URL(req.url);
+  const userID = url.searchParams.get("userID");
+
   try {
     //authorization check
     if (!process.env.JWT_SECRET) {
@@ -70,7 +74,18 @@ export async function GET(req: NextRequest, res: NextResponse) {
       );
     }
 
-    const recipes = await Recipes.find().exec();
+    const user = await Users.findOne({ _id: userID }).exec();
+    if (!user) {
+      return NextResponse.json(
+        { message: "Failed: User not found" },
+        { status: 404 }
+      );
+    }
+
+    const recipes = await Recipes.find({
+      _id: { $in: user.recipes },
+    }).exec();
+
     return NextResponse.json(recipes);
   } catch (error) {
     console.log(error);
