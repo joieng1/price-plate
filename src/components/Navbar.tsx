@@ -7,8 +7,17 @@ import {
 } from "@/components/ui/dropdown-menu";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function Navbar() {
+  const router = useRouter();
+
+  const handleLogout = () => {
+    // Clear localStorage
+    localStorage.clear();
+    router.push("/");
+  };
+
   return (
     <nav className="flex items-center bg-[#283D3B] h-[120px]">
       <Link
@@ -44,13 +53,16 @@ export default function Navbar() {
           </DropdownMenuTrigger>
           <DropdownMenuContent className="mt-[26px] w-[100vh]">
             <DropdownMenuItem className="text-4xl text-white">
-            <Link href="/home">Home</Link>
+              <Link href="/home">Home</Link>
             </DropdownMenuItem>
             <DropdownMenuItem className="text-4xl text-white">
               <Link href="/recipeCard">Recipes</Link>
             </DropdownMenuItem>
             <DropdownMenuItem className="text-4xl text-white">
-            <Link href="/ingredients">Ingredients</Link>
+              <Link href="/ingredients">Ingredients</Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem className="text-2xl text-white" onClick={handleLogout}>
+              Log Out
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

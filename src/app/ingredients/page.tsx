@@ -6,6 +6,7 @@ import Link from 'next/link';
 
 interface Ingredient {
   ingredientName: string;
+  unitType: string;
   pricePerUnit: number;
 }
 
@@ -17,7 +18,7 @@ function IngredientsList({ ingredientList }: { ingredientList: Ingredient[] }) {
           <ListItem key={index} className={styles.ingredient}>
             <ListItemText className = {styles.ingredientfield} 
               primary={`${ingredient.ingredientName}`} 
-              secondary={`$${ingredient.pricePerUnit} per unit`}/>
+              secondary={`$${ingredient.pricePerUnit} per ${ingredient.unitType}`}/>
             {/* <ListItemText className = {styles.ingredientfield} primary={`$${ingredient.unit_cost} per unit`} /> */}
             <Link href="/ingredientCard">
               <Button variant="contained" className = {styles.moreinfo} color = "success" >More Info</Button>
