@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
+import Link from "next/link";
+
 import {
   Form,
   FormControl,
@@ -12,6 +14,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Input } from "@/components/ui/input";
 import { Button } from "../../components/ui/button";
 import OutlinedInput from "@mui/material/OutlinedInput";
@@ -31,15 +34,13 @@ const formSchema = z.object({
   vendorName: z.string().min(1, "Vendor name must not be empty"),
   unitType: unitTypeEnum,
   numberUnits: z.coerce.number().min(0, "Units must be greater or equal to 0"),
-  price: z.coerce
-    .number()
-    .min(0, "Price must be greater or equal to 0"),
+  price: z.coerce.number().min(0, "Price must be greater or equal to 0"),
 });
 
 interface Ingredient {
   userID: string;
   ingredientName: string;
-  brand: string,
+  brand: string;
   vendorName: string;
   unitType: string;
   numberUnits: number;
@@ -68,6 +69,8 @@ function CreateIngredientPage() {
     price: 0,
     pricePerUnit: 0,
   });
+
+  const [submitted, setSubmitted] = useState<Boolean>(true);
 
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {
     const pricePerUnit = values.price / values.numberUnits;
@@ -103,6 +106,7 @@ function CreateIngredientPage() {
 
       const data = await response.json();
       console.log("Success:", data);
+      setSubmitted(true);
       // Handle success
     } catch (error) {
       console.error("Error:", error);
@@ -118,150 +122,167 @@ function CreateIngredientPage() {
 
   return (
     <div className="min-h-screen w-full bg-[antiquewhite] grid place-items-center pt-10">
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(handleSubmit)}
-          className="flex flex-col mx-auto mt-5 sm:min-w-lg md:min-w-lg lg:min-w-[50rem] xl:min-w-[70rem] bg-[#9DB4AB] min-h-[50rem] px-10 pb-5 border rounded-[10px] border-black"
-        >
-          <FormField
-            control={form.control}
-            name="ingredientName"
-            render={({ field }) => {
-              return (
-                <FormItem className="my-5">
-                  <FormLabel className="text-[2rem]">Ingredient Name</FormLabel>
-                  <FormControl>
-                    <Input
-                      className="text-[1.2rem] bg-[#FFFCF4]"
-                      placeholder="Ingredient Name"
-                      type="string"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              );
-            }}
-          />
-          <FormField
-            control={form.control}
-            name="brand"
-            render={({ field }) => {
-              return (
-                <FormItem className="my-5">
-                  <FormLabel className="text-[2rem]">Brand</FormLabel>
-                  <FormControl>
-                    <Input
-                      className="text-[1.2rem] bg-[#FFFCF4]"
-                      placeholder="Brand Name"
-                      type="string"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              );
-            }}
-          />
-          <FormField
-            control={form.control}
-            name="vendorName"
-            render={({ field }) => {
-              return (
-                <FormItem className="my-5">
-                  <FormLabel className="text-[2rem]">Vendor Name</FormLabel>
-                  <FormControl>
-                    <Input
-                      className="text-[1.2rem] bg-[#FFFCF4]"
-                      placeholder="Vendor Name"
-                      type="string"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              );
-            }}
-          />
-          <FormField
-            control={form.control}
-            name="numberUnits"
-            render={({ field }) => (
-              <FormItem className="my-5 flex flex-col">
-                <FormLabel className="text-[2rem]">Units</FormLabel>
-                <FormControl>
-                  <OutlinedInput
-                    className="text-[1.2rem] bg-[#FFFCF4]"
-                    endAdornment={
-                      <InputAdornment position="start">
-                        <Controller
-                          name="unitType"
-                          control={form.control}
-                          render={({ field }) => (
-                            <DropdownMenu>
-                              <DropdownMenuTrigger className="w-[10rem]">
-                                <div className="border-[1.5px] border-gray-300 rounded-md p-1 cursor-pointer">
-                                  {field.value || "Select Unit Type"}
-                                </div>
-                              </DropdownMenuTrigger>
-                              <DropdownMenuContent className="bg-white">
-                                {unitTypeEnum.options.map((unit) => (
-                                  <DropdownMenuItem
-                                    key={unit}
-                                    className="text-[1.2rem]"
-                                    onSelect={() => field.onChange(unit)}
-                                  >
-                                    {unit}
-                                  </DropdownMenuItem>
-                                ))}
-                              </DropdownMenuContent>
-                            </DropdownMenu>
-                          )}
-                        />
-                      </InputAdornment>
-                    }
-                    type="number"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="price"
-            render={({ field }) => {
-              return (
+      {submitted ? (
+        <div className="flex items-center justify-center mx-auto">
+          <Alert className="text-center p-8 text-lg bg-[#283D3B]">
+            <AlertTitle className="text-2xl mb-4 text-white">
+              Ingredient Created
+            </AlertTitle>
+            <AlertDescription className="text-xl">
+              <Link href="/createIngredient" onClick={() => setSubmitted(false)}>
+                <Button className="text-md bg-[#9DB4AB]">Create another ingredient</Button>
+              </Link>
+            </AlertDescription>
+          </Alert>
+        </div>
+      ) : (
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(handleSubmit)}
+            className="flex flex-col mx-auto mt-5 sm:min-w-lg md:min-w-lg lg:min-w-[50rem] xl:min-w-[70rem] bg-[#9DB4AB] min-h-[50rem] px-10 pb-5 border rounded-[10px] border-black"
+          >
+            <FormField
+              control={form.control}
+              name="ingredientName"
+              render={({ field }) => {
+                return (
+                  <FormItem className="my-5">
+                    <FormLabel className="text-[2rem]">
+                      Ingredient Name
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        className="text-[1.2rem] bg-[#FFFCF4]"
+                        placeholder="Ingredient Name"
+                        type="string"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                );
+              }}
+            />
+            <FormField
+              control={form.control}
+              name="brand"
+              render={({ field }) => {
+                return (
+                  <FormItem className="my-5">
+                    <FormLabel className="text-[2rem]">Brand</FormLabel>
+                    <FormControl>
+                      <Input
+                        className="text-[1.2rem] bg-[#FFFCF4]"
+                        placeholder="Brand Name"
+                        type="string"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                );
+              }}
+            />
+            <FormField
+              control={form.control}
+              name="vendorName"
+              render={({ field }) => {
+                return (
+                  <FormItem className="my-5">
+                    <FormLabel className="text-[2rem]">Vendor Name</FormLabel>
+                    <FormControl>
+                      <Input
+                        className="text-[1.2rem] bg-[#FFFCF4]"
+                        placeholder="Vendor Name"
+                        type="string"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                );
+              }}
+            />
+            <FormField
+              control={form.control}
+              name="numberUnits"
+              render={({ field }) => (
                 <FormItem className="my-5 flex flex-col">
-                  <FormLabel className="text-[2rem]">Price</FormLabel>
+                  <FormLabel className="text-[2rem]">Units</FormLabel>
                   <FormControl>
-                    {/* <Input placeholder="Units" type="number" {...field} /> */}
                     <OutlinedInput
                       className="text-[1.2rem] bg-[#FFFCF4]"
-                      startAdornment={
-                        <InputAdornment position="start">$</InputAdornment>
+                      endAdornment={
+                        <InputAdornment position="start">
+                          <Controller
+                            name="unitType"
+                            control={form.control}
+                            render={({ field }) => (
+                              <DropdownMenu>
+                                <DropdownMenuTrigger className="w-[10rem]">
+                                  <div className="border-[1.5px] border-gray-300 rounded-md p-1 cursor-pointer">
+                                    {field.value || "Select Unit Type"}
+                                  </div>
+                                </DropdownMenuTrigger>
+                                <DropdownMenuContent className="bg-white">
+                                  {unitTypeEnum.options.map((unit) => (
+                                    <DropdownMenuItem
+                                      key={unit}
+                                      className="text-[1.2rem]"
+                                      onSelect={() => field.onChange(unit)}
+                                    >
+                                      {unit}
+                                    </DropdownMenuItem>
+                                  ))}
+                                </DropdownMenuContent>
+                              </DropdownMenu>
+                            )}
+                          />
+                        </InputAdornment>
                       }
                       type="number"
                       {...field}
                     />
-                    {/* Will need to be a dropdown selection or something to select unit type */}
                   </FormControl>
                   <FormMessage />
                 </FormItem>
-              );
-            }}
-          />
-          <div className="w-full flex justify-center mt-5">
-            <Button
-              type="submit"
-              className="rounded-[20px] mx-auto text-xl px-5 h-20 w-80"
-            >
-              Submit
-            </Button>
-          </div>
-        </form>
-      </Form>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="price"
+              render={({ field }) => {
+                return (
+                  <FormItem className="my-5 flex flex-col">
+                    <FormLabel className="text-[2rem]">Price</FormLabel>
+                    <FormControl>
+                      {/* <Input placeholder="Units" type="number" {...field} /> */}
+                      <OutlinedInput
+                        className="text-[1.2rem] bg-[#FFFCF4]"
+                        startAdornment={
+                          <InputAdornment position="start">$</InputAdornment>
+                        }
+                        type="number"
+                        {...field}
+                      />
+                      {/* Will need to be a dropdown selection or something to select unit type */}
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                );
+              }}
+            />
+            <div className="w-full flex justify-center mt-5">
+              <Button
+                type="submit"
+                className="rounded-[20px] mx-auto text-xl px-5 h-20 w-80"
+              >
+                Submit
+              </Button>
+            </div>
+          </form>
+        </Form>
+      )}
     </div>
   );
 }
