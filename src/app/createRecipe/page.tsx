@@ -72,6 +72,7 @@ const CreateRecipePage = () => {
   const [checked, setChecked] = useState<string[]>([]);
   const [units, setUnits] = useState<{ [key: string]: number }>({});
   const [createdIngredients, setIngredients] = useState<IRecipeIngredient[]>([]);
+  const [recipeName, setRecipeName] = useState<string>("");
   const { push } = useRouter();
 
   useEffect(() => {
@@ -171,7 +172,7 @@ const CreateRecipePage = () => {
         },
         body: JSON.stringify({
           userID: userID,
-          recipeName: 'Recipe',
+          recipeName: recipeName,
           recipeIngredients: recipeIngredients,
           totalCost: totalCost
         })
@@ -198,15 +199,23 @@ const CreateRecipePage = () => {
 
           <p>No ingredients found</p>
             ) : (
-
-          <CreatedIngredientsList
-            ingredientList={filteredIngredients}
-            checked={checked}
-            handleToggle={handleToggle}
-            handleUnitChange={handleUnitChange}
-            units={units}
-          />
-
+          
+          <div>
+            <TextField
+              value={recipeName}
+              placeholder="Recipe Name"
+              onChange={(e) => setRecipeName(e.target.value)}
+              fullWidth
+              className={styles.recipeName}
+            />
+            <CreatedIngredientsList
+              ingredientList={filteredIngredients}
+              checked={checked}
+              handleToggle={handleToggle}
+              handleUnitChange={handleUnitChange}
+              units={units}
+            />
+          </div>
         )}
 
         <div className={styles.totalCost}>
