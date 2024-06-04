@@ -5,6 +5,7 @@ import { Box, Button, List, ListItem, ListItemText, Checkbox, ListItemSecondaryA
 import Link from 'next/link';
 import { useRouter } from "next/navigation";
 import { IRecipeIngredient } from "@/database/recipeSchema"
+import withAuth from "@/middleware/withAuth";
 
 function CreatedIngredientsList({ ingredientList, checked, handleToggle, handleUnitChange, units }: {
   ingredientList: IRecipeIngredient[];
@@ -226,4 +227,4 @@ const CreateRecipePage = () => {
   );
 };
 
-export default CreateRecipePage;
+export default withAuth(CreateRecipePage);

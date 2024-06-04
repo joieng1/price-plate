@@ -5,6 +5,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import Link from "next/link";
+import withAuth from "@/middleware/withAuth";
 
 import {
   Form,
@@ -287,4 +288,4 @@ function CreateIngredientPage() {
   );
 }
 
-export default CreateIngredientPage;
+export default withAuth(CreateIngredientPage);
