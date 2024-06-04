@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import styles from "./homepage.module.css";
 import { Box, Button, List, ListItem, ListItemText } from "@mui/material";
 import Link from 'next/link';
+import withAuth from "@/middleware/withAuth"
 
 interface Recipe {
   recipeName: string;
@@ -46,7 +47,7 @@ const SearchBar = ({ onChange, value }: { onChange: (e: React.ChangeEvent<HTMLIn
   );
 };
 
-export default function RecipePage() {
+function RecipePage() {
   const [searchInput, setSearchInput] = useState<string>("");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -73,3 +74,5 @@ export default function RecipePage() {
     </div>
   );
 }
+
+export default withAuth(RecipePage);
