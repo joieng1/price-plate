@@ -3,6 +3,7 @@ import React, { useState, useEffect, use } from "react";
 import styles from "./ingredients.module.css";
 import { Box, Button, List, ListItem, ListItemText } from "@mui/material";
 import Link from 'next/link';
+import withAuth from "@/middleware/withAuth";
 
 interface Ingredient {
   ingredientName: string;
@@ -42,7 +43,7 @@ const SearchBar = ({ onChange, value }: { onChange: (e: React.ChangeEvent<HTMLIn
   );
 };
 
-export default function IngredientsPage() {
+function IngredientsPage() {
   const [ingredients, setIngredients] = useState<Ingredient[]>([]);
   const [searchInput, setSearchInput] = useState<string>("");
 
@@ -101,3 +102,5 @@ export default function IngredientsPage() {
     </div>
   );
 }
+
+export default withAuth(IngredientsPage)

@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import Link from 'next/link';
 import styles from './signup.module.css';
 import {IRecipe} from "@/database/recipeSchema"
+import Image from 'next/image';
 
 const SignUpPage = () => {
   const [firstname, setFirstname] = useState<string>('');
@@ -54,7 +55,7 @@ const SignUpPage = () => {
     <div className={styles.signUpBackground}>
       
       <Link href="/home" className={styles.logoContainer}>
-          <img src="/logo.png" alt="Logo" height={100} width={100}/>
+          <Image src="/logo.png" alt="Logo" height={100} width={100}/>
       </Link>
 
       <div className="flex flex-col items-center">
