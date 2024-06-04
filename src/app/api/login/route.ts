@@ -38,7 +38,7 @@ export async function POST(req: NextRequest) {
 
     const token = await generateAccessToken(username);
     console.log("Generated Token and Login Success");
-    return NextResponse.json({ message: "Success: Login Complete", token });
+    return NextResponse.json({ message: "Success: Login Complete", token, userID: user._id.toString() });
 
   } catch (err) {
     return NextResponse.json(`${err}`, { status: 400 });

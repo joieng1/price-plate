@@ -1,14 +1,22 @@
 import { NextRequest, NextResponse } from "next/server";
 import connectDB from "@/database/db";
-import Recipes from "@/database/recipeSchema";
+import Ingredients from "@/database/ingredientSchema";
 import Users from "@/database/userSchema";
 import { authenticateUser } from "@/middleware/auth";
 
 export async function POST(req: NextRequest) {
   await connectDB();
   try {
-    const { userID, recipeName, recipeIngredients, totalCost } =
-      await req.json();
+    const {
+      userID,
+      ingredientName,
+      brand,
+      vendor,
+      unitType,
+      numberUnits,
+      price,
+      pricePerUnit,
+    } = await req.json();
 
     //authorization check
     if (!process.env.JWT_SECRET) {
@@ -26,37 +34,41 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const newRecipe = await new Recipes({
+    const newIngredient = await new Ingredients({
       userID,
-      recipeName,
-      recipeIngredients,
-      totalCost,
+      ingredientName,
+      brand,
+      vendor,
+      unitType,
+      numberUnits,
+      price,
+      pricePerUnit,
     }).save();
 
-    // add the recipe's ID to the recipes array of the user object
+    // add the ingredient's ID to the ingredients array of the user object
     const updatedUser = await Users.findByIdAndUpdate(
       userID,
-      { $push: { recipes: newRecipe._id } },
+      { $push: { ingredients: newIngredient._id } },
       { new: true }
     );
 
     if (!updatedUser) {
       return NextResponse.json({ message: "Failed to add" });
     }
-    return NextResponse.json(newRecipe);
+    return NextResponse.json(newIngredient);
   } catch (error) {
     console.log(error);
     return NextResponse.json(error, { status: 400 });
   }
 }
 
-// returns all recipes
+// returns all ingredients
 export async function GET(req: NextRequest, res: NextResponse) {
   await connectDB();
-
+  
+  //extract userID from query params
   const url = new URL(req.url);
-  const userID = url.searchParams.get("userID");
-
+  const userID = url.searchParams.get('userID');
   try {
     //authorization check
     if (!process.env.JWT_SECRET) {
@@ -65,6 +77,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
         { status: 400 }
       );
     }
+
     const verifytoken = await authenticateUser(req);
     const jsonData = await verifytoken.json();
     if (jsonData.message != "Authorized") {
@@ -82,11 +95,12 @@ export async function GET(req: NextRequest, res: NextResponse) {
       );
     }
 
-    const recipes = await Recipes.find({
-      _id: { $in: user.recipes },
+    const ingredients = await Ingredients.find({
+      _id: { $in: user.ingredients }
     }).exec();
 
-    return NextResponse.json(recipes);
+    // const ingredients = await Ingredients.find({userID: userID}).exec();
+    return NextResponse.json(ingredients);
   } catch (error) {
     console.log(error);
     return NextResponse.json(error);
