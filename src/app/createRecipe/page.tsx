@@ -3,15 +3,11 @@ import React, { useState, useEffect } from "react";
 import styles from './createRecipe.module.css';
 import { Box, Button, List, ListItem, ListItemText, Checkbox, ListItemSecondaryAction, TextField } from "@mui/material";
 import Link from 'next/link';
-
-interface CreatedIngredient {
-  ingredientName: string;
-  unitType: string;
-  pricePerUnit: number;
-}
+import { useRouter } from "next/navigation";
+import { IRecipeIngredient } from "@/database/recipeSchema"
 
 function CreatedIngredientsList({ ingredientList, checked, handleToggle, handleUnitChange, units }: {
-  ingredientList: CreatedIngredient[];
+  ingredientList: IRecipeIngredient[];
   checked: string[];
   handleToggle: (ingredientName: string) => () => void;
   handleUnitChange: (ingredientName: string) => (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -25,15 +21,15 @@ function CreatedIngredientsList({ ingredientList, checked, handleToggle, handleU
             
               <div className={styles.ingredientContent}>
                 <ListItemText
-                  primary={`${ingredient.ingredientName}`}
-                  secondary={`$${ingredient.pricePerUnit} per ${ingredient.unitType}`}
+                  primary={`${ingredient.recipeIngredientName}`}
+                  secondary={`$${ingredient.costPerUnit.toFixed(2)} per ${ingredient.unitType}`}
                   className={styles.ingredientName}
                 />
   
                 <TextField
                   type="number"
-                  value={units[ingredient.ingredientName] || ''}
-                  onChange={handleUnitChange(ingredient.ingredientName)}
+                  value={units[ingredient.recipeIngredientName] || ''}
+                  onChange={handleUnitChange(ingredient.recipeIngredientName)}
                   label="Enter Units"
                   inputProps={{ min: 0, max: 99999999999}}
                   className={styles.ingredientfield}
@@ -41,13 +37,13 @@ function CreatedIngredientsList({ ingredientList, checked, handleToggle, handleU
   
                 <div className={styles.secondaryAction}>
                   <ListItemText
-                    primary={`Cost: $${(ingredient.pricePerUnit * (units[ingredient.ingredientName] || 0)).toFixed(2)}`}
+                    primary={`Cost: $${(ingredient.costPerUnit * (units[ingredient.recipeIngredientName] || 0)).toFixed(2)}`}
                     className={styles.costText}
                   />
                   <Checkbox 
                     edge="end"
-                    onChange={handleToggle(ingredient.ingredientName)}
-                    checked={checked.indexOf(ingredient.ingredientName) !== -1 && units[ingredient.ingredientName] > 0}
+                    onChange={handleToggle(ingredient.recipeIngredientName)}
+                    checked={checked.indexOf(ingredient.recipeIngredientName) !== -1 && units[ingredient.recipeIngredientName] > 0}
                   />
                 </div>
               </div>
@@ -74,7 +70,8 @@ const CreateRecipePage = () => {
   const [searchInput, setSearchInput] = useState<string>("");
   const [checked, setChecked] = useState<string[]>([]);
   const [units, setUnits] = useState<{ [key: string]: number }>({});
-  const [createdIngredients, setIngredients] = useState<CreatedIngredient[]>([]);
+  const [createdIngredients, setIngredients] = useState<IRecipeIngredient[]>([]);
+  const { push } = useRouter();
 
   useEffect(() => {
     const fetchIngredients = async () => {
@@ -134,16 +131,66 @@ const CreateRecipePage = () => {
   };
 
   const filteredIngredients = createdIngredients.filter((ingredient) => {
-    return ingredient.ingredientName.toLowerCase().includes(searchInput.toLowerCase());
+    return ingredient.recipeIngredientName.toLowerCase().includes(searchInput.toLowerCase());
   });
 
   const totalCost = Object.keys(units).reduce((sum, key) => {
-    const ingredient = createdIngredients.find(i => i.ingredientName === key);
-    if (ingredient && checked.includes(ingredient.ingredientName)) {
-      return sum + (ingredient.pricePerUnit * (units[key] || 0));
+    const ingredient = createdIngredients.find(i => i.recipeIngredientName === key);
+    if (ingredient && checked.includes(ingredient.recipeIngredientName)) {
+      return sum + (ingredient.costPerUnit * (units[key] || 0));
     }
     return sum;
   }, 0);
+
+  const handleSubmit = async(e: React.MouseEvent<HTMLButtonElement>) => {
+    try{
+      e.preventDefault()
+
+      const token = localStorage.get("jwtToken");
+      const userID = localStorage.get("userID");
+      const recipeIngredients = checked.map(ingredientName => {
+        const recipeIngredient = createdIngredients.find(i => i.recipeIngredientName == ingredientName);
+
+        if (!recipeIngredient) {
+          throw new Error(`${ingredientName} Not Found`);
+        }
+
+        return {
+          recipeingredientName: ingredientName,
+          unitType: recipeIngredient.unitType,
+          numberUnits: units[ingredientName],
+          costPerUnit: recipeIngredient.costPerUnit,
+          cost: recipeIngredient.costPerUnit * units[ingredientName]
+        };
+
+      });
+
+      alert(recipeIngredients);
+
+      const response = await fetch("/api/recipe", {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          userID: userID,
+          recipeName: 'Recipe',
+          recipeIngredients: recipeIngredients,
+          totalCost: totalCost
+        })
+      });
+
+      if(!response.ok){
+        throw new Error(`Failed to create recipe status: ${response.status}`);
+      }
+      push('/home');
+
+    }
+    catch (error) {
+      console.error("Error", error);
+    }
+  }
 
   return (
     <div className={styles.ingredientsPage}>
@@ -171,7 +218,7 @@ const CreateRecipePage = () => {
         </div>
 
         <Link href="/home">
-          <Button variant="contained" className={styles.createbutton} color="success">Create Recipe</Button>
+          <Button variant="contained" className={styles.createbutton} color="success" onClick={handleSubmit}>Create Recipe</Button>
         </Link> 
 
       </div>
