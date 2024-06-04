@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
-import { useRouter } from "next/navigation";
+import { useRouter } from 'next/navigation';
 
 const jwt = require('jsonwebtoken');
+
 const withAuth = (WrappedComponent: React.ComponentType) => {
-    return (props: any) => {
+    const AuthComponent = (props: any) => {
         const [isAuthenticated, setIsAuthenticated] = useState(false);
         const [loading, setLoading] = useState(true);
         const router = useRouter();
@@ -80,6 +81,9 @@ const withAuth = (WrappedComponent: React.ComponentType) => {
 
         return <WrappedComponent {...props} />;
     };
+
+    AuthComponent.displayName = `withAuth(${WrappedComponent.displayName || WrappedComponent.name || 'Component'})`;
+    return AuthComponent;
 };
   
 export default withAuth;
