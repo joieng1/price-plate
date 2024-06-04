@@ -15,7 +15,7 @@ export default function Navbar() {
   const handleLogout = () => {
     // Clear localStorage
     localStorage.clear();
-    router.push("/");
+    router.push("/login");
   };
 
   return (

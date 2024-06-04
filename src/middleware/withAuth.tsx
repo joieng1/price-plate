@@ -5,16 +5,20 @@ const jwt = require('jsonwebtoken');
 const withAuth = (WrappedComponent: React.ComponentType) => {
     return (props: any) => {
         const [isAuthenticated, setIsAuthenticated] = useState(false);
+        const [loading, setLoading] = useState(true);
         const router = useRouter();
 
         useEffect(() => {
             
+            const loading_time = 1500;
             const protectPage = async () => {
                 const token = localStorage.getItem("jwtToken");
                 const userID = localStorage.getItem("userID");
 
                 if (!token || !userID) {
-                    router.push('/login');
+                    setTimeout(() => {
+                        router.push('/login');
+                    }, loading_time);
                 } 
 
                 else {
@@ -35,20 +39,43 @@ const withAuth = (WrappedComponent: React.ComponentType) => {
 
                         else {
                             localStorage.clear()
-                            router.push('/login');
+                            setTimeout(() => {
+                                router.push('/login');
+                            }, loading_time);
                         }
 
                     } catch (error) {
                         console.error("Failed to validate token:", error);
-                        router.push('/login');
+                        setTimeout(() => {
+                            router.push('/login');
+                        }, loading_time);
                     }
                 }
+
+                setLoading(false);
             };
             protectPage();
         }, [router]);
 
-        if (!isAuthenticated) {
+        if (loading){
             return null
+        }
+        
+        if (!isAuthenticated) {
+            return (
+                <div style={{ 
+                    display: 'flex', 
+                    justifyContent: 'center', 
+                    alignItems: 'center', 
+                    height: '50vh', 
+                    textAlign: 'center',
+                    flexDirection: 'column',
+                    fontSize: 36,
+                }}>
+                    <h1>Page Unavailable</h1>
+                    <p>Redirecting ...</p>
+                </div>
+            )
         }
 
         return <WrappedComponent {...props} />;
