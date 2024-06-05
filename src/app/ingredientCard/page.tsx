@@ -1,7 +1,6 @@
 "use client";
 import React, { FunctionComponent, useState } from "react";
 import styles from "./ingredientCard.module.css";
-import withAuth from "@/middleware/withAuth";
 
 interface IngredientAttributes {
   ingredient_name: string;
@@ -49,4 +48,4 @@ const IngredientCard: FunctionComponent = () => {
   return <IngredientCardHelper ingredient={ingredient} />;
 };
 
-export default withAuth(IngredientCard);
+export default IngredientCard;

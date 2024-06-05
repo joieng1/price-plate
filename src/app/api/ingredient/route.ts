@@ -77,7 +77,6 @@ export async function GET(req: NextRequest, res: NextResponse) {
         { status: 400 }
       );
     }
-
     const verifytoken = await authenticateUser(req);
     const jsonData = await verifytoken.json();
     if (jsonData.message != "Authorized") {
@@ -87,19 +86,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
       );
     }
 
-    const user = await Users.findOne({ _id: userID }).exec();
-    if (!user) {
-      return NextResponse.json(
-        { message: "Failed: User not found" },
-        { status: 404 }
-      );
-    }
-
-    const ingredients = await Ingredients.find({
-      _id: { $in: user.ingredients }
-    }).exec();
-
-    // const ingredients = await Ingredients.find({userID: userID}).exec();
+    const ingredients = await Ingredients.find({userID: userID}).exec();
     return NextResponse.json(ingredients);
   } catch (error) {
     console.log(error);

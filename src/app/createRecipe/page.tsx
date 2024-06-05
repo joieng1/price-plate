@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import styles from './createRecipe.module.css';
 import { Box, Button, List, ListItem, ListItemText, Checkbox, ListItemSecondaryAction, TextField } from "@mui/material";
 import Link from 'next/link';
-import withAuth from '@/middleware/withAuth'
 
 interface CreatedIngredient {
   ingredientName: string;
@@ -159,4 +158,4 @@ const CreateRecipePage = () => {
   );
 };
 
-export default withAuth(CreateRecipePage);
+export default CreateRecipePage;

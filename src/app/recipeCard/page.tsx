@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import styles from "./recipeCard.module.css";
 import { Box, Button, List, ListItem, ListItemText } from "@mui/material";
 import Link from 'next/link';
-import withAuth from "@/middleware/withAuth";
 
 interface Ingredient {
   ingredientName: string;
@@ -108,4 +107,4 @@ const RecipeCard = () => {
   return <RecipeCardHelper recipe={recipe} />;
 };
 
-export default withAuth(RecipeCard);
+export default RecipeCard;
