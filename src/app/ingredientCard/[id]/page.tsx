@@ -72,6 +72,7 @@ const IngredientCard: FunctionComponent<IngredientCardProps> = ({ params }) => {
         const data: IngredientAttributes = await response.json();
         setIngredient(data);
         setFormValues(data);
+
       } catch (error) {
         console.error("Error fetching ingredients:", error);
       }
@@ -114,6 +115,7 @@ const IngredientCard: FunctionComponent<IngredientCardProps> = ({ params }) => {
         },
         body: JSON.stringify(editIngredient),
       });
+      alert("Updated");
 
       if (!response.ok) {
         throw new Error("Failed to update ingredient");
