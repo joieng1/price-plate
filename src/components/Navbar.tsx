@@ -52,18 +52,23 @@ export default function Navbar() {
             </svg>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="mt-[26px] w-[100vh]">
+
             <DropdownMenuItem className="text-4xl text-white">
               <Link href="/home">Home</Link>
             </DropdownMenuItem>
-            <DropdownMenuItem className="text-4xl text-white">
+
+            {/* <DropdownMenuItem className="text-4xl text-white">
               <Link href="/recipeCard">Recipes</Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem className="text-4xl text-white">
-              <Link href="/ingredients">Ingredients</Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem className="text-2xl text-white" onClick={handleLogout}>
+            </DropdownMenuItem> */}
+
+             <DropdownMenuItem className="text-4xl text-white">
+               <Link href="/ingredients">Ingredients</Link>
+             </DropdownMenuItem>
+
+            <DropdownMenuItem className="text-4xl text-white" onClick={handleLogout}>
               Log Out
             </DropdownMenuItem>
+
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
