@@ -6,11 +6,39 @@ import Link from 'next/link';
 import withAuth from "@/middleware/withAuth";
 
 interface Recipe {
-  recipeName: string;
-  totalCost: number;  // Ensure this matches the field from the database
+  _id: string
+  userID: string;
+  recipeName: String;
+  totalCost: Number
 }
 
-function RecipeList({ recipeList }: { recipeList: Recipe[] }) {
+const handleDelete = async (recipe: Recipe, setRecipes: React.Dispatch<React.SetStateAction<Recipe[]>>) => {
+  try {
+    var result = confirm(`Confirming To Delete ${recipe.recipeName}`);
+    if (result) {
+      const token = localStorage.getItem("jwtToken");
+
+      const response = await fetch(`/api/recipe/${recipe._id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        setRecipes(prevRecipes => prevRecipes.filter(r => r._id !== recipe._id));
+      } 
+      else {
+        console.error("Failed to delete recipe");
+      }
+    }
+  } catch (error) {
+    console.error("An error occurred", error);
+  }
+}
+
+function RecipeList({ recipeList, setRecipes }: { recipeList: Recipe[], setRecipes: React.Dispatch<React.SetStateAction<Recipe[]>> }) {
   return (
     <Box>
       <List>
@@ -24,6 +52,7 @@ function RecipeList({ recipeList }: { recipeList: Recipe[] }) {
             <Link href="/recipeCard">
               <Button variant="contained" className={styles.view} color="success">View</Button>
             </Link>
+            <Button variant="contained" className={styles.view} color="error" onClick={() => handleDelete(recipe, setRecipes)}>Delete</Button>
           </ListItem>
         ))}
       </List>
@@ -88,7 +117,7 @@ function RecipePage() {
         {filteredRecipes.length === 0 ? (
           <p>No recipes found</p>
         ) : (
-          <RecipeList recipeList={filteredRecipes} />
+          <RecipeList recipeList={filteredRecipes} setRecipes={setRecipes} />
         )}
         <Link href="/createRecipe">
           <Button variant="contained" className={styles.createbutton} color="success">Create New Recipe</Button>
