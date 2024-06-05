@@ -6,9 +6,13 @@ import Link from 'next/link';
 import withAuth from "@/middleware/withAuth";
 
 interface Ingredient {
+  _id: string;
+  userID: string;
   ingredientName: string;
+  brand: string;
   unitType: string;
   pricePerUnit: number;
+  vendor: string;
 }
 
 function IngredientsList({ ingredientList }: { ingredientList: Ingredient[] }) {
@@ -21,8 +25,8 @@ function IngredientsList({ ingredientList }: { ingredientList: Ingredient[] }) {
               primary={`${ingredient.ingredientName}`} 
               secondary={`$${ingredient.pricePerUnit.toFixed(2)} per ${ingredient.unitType}`}/>
             {/* <ListItemText className = {styles.ingredientfield} primary={`$${ingredient.unit_cost} per unit`} /> */}
-            <Link href="/ingredientCard">
-              <Button variant="contained" className = {styles.moreinfo} color = "success" >More Info</Button>
+            <Link href={`/ingredientCard/${ingredient._id}`}>
+              <Button variant="contained" className = {styles.moreinfo} color = "success">More Info</Button>
             </Link>
           </ListItem>
         ))}
