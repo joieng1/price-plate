@@ -1,19 +1,19 @@
 import mongoose, { ObjectId, Schema } from "mongoose";
 
 export type IRecipeIngredient = {
-  recipeIngredientName: String;
-  unitType: String;
-  numberUnits: Number;
-  costPerUnit: Number;
-  cost: Number;
+  ingredientName: string;
+  unitType: string;
+  numberUnits: number;
+  pricePerUnit: number;
+  price: number;
 }
 
 const RecipeIngredientSchema = new Schema<IRecipeIngredient>({
-  recipeIngredientName: { type: String },
+  ingredientName: { type: String },
   unitType: { type: String },
   numberUnits: { type: Number },
-  costPerUnit: { type: Number },
-  cost: { type: Number },
+  pricePerUnit: { type: Number },
+  price: { type: Number },
 });
 
 export type IRecipe = {

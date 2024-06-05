@@ -71,7 +71,7 @@ function CreateIngredientPage() {
     pricePerUnit: 0,
   });
 
-  const [submitted, setSubmitted] = useState<Boolean>(true);
+  const [submitted, setSubmitted] = useState<Boolean>(false);
 
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {
     const pricePerUnit = values.price / values.numberUnits;
@@ -101,11 +101,16 @@ function CreateIngredientPage() {
         body: JSON.stringify(updatedIngredient),
       });
 
+      const data = await response.json();
+      if(data.message == "Failed: Ingredient name already used"){
+        alert("Ingredient name already used");
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
 
-      const data = await response.json();
       console.log("Success:", data);
       setSubmitted(true);
       // Handle success

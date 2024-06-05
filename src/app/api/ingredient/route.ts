@@ -34,6 +34,15 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    const existingIngredient = await Ingredients.findOne({ userID, ingredientName });
+
+    if (existingIngredient) {
+      return NextResponse.json(
+        { message: "Failed: Ingredient name already used" },
+        { status: 400 }
+      );
+    }
+
     const newIngredient = await new Ingredients({
       userID,
       ingredientName,
