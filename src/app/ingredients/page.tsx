@@ -1,22 +1,15 @@
 "use client"
-import React, { useState } from "react";
+import React, { useState, useEffect, use } from "react";
 import styles from "./ingredients.module.css";
 import { Box, Button, List, ListItem, ListItemText } from "@mui/material";
 import Link from 'next/link';
+import withAuth from "@/middleware/withAuth";
 
 interface Ingredient {
   ingredientName: string;
-  unit_cost: number;
+  unitType: string;
+  pricePerUnit: number;
 }
-
-const ingredientList: Ingredient[] = [
-  { ingredientName: 'Flour', unit_cost: 2.99 },
-  { ingredientName: 'Sugar', unit_cost: 1.49 },
-  { ingredientName: 'Eggs', unit_cost: 0.99 },
-  { ingredientName: 'Bread', unit_cost: 0.35 },
-  { ingredientName: 'Apples', unit_cost: 0.82 },
-  { ingredientName: 'Sourdough', unit_cost: 0.43 },
-];
 
 function IngredientsList({ ingredientList }: { ingredientList: Ingredient[] }) {
   return (
@@ -26,7 +19,7 @@ function IngredientsList({ ingredientList }: { ingredientList: Ingredient[] }) {
           <ListItem key={index} className={styles.ingredient}>
             <ListItemText className = {styles.ingredientfield} 
               primary={`${ingredient.ingredientName}`} 
-              secondary={`$${ingredient.unit_cost} per unit`}/>
+              secondary={`$${ingredient.pricePerUnit} per ${ingredient.unitType}`}/>
             {/* <ListItemText className = {styles.ingredientfield} primary={`$${ingredient.unit_cost} per unit`} /> */}
             <Link href="/ingredientCard">
               <Button variant="contained" className = {styles.moreinfo} color = "success" >More Info</Button>
@@ -50,14 +43,46 @@ const SearchBar = ({ onChange, value }: { onChange: (e: React.ChangeEvent<HTMLIn
   );
 };
 
-export default function IngredientsPage() {
+function IngredientsPage() {
+  const [ingredients, setIngredients] = useState<Ingredient[]>([]);
   const [searchInput, setSearchInput] = useState<string>("");
+
+  useEffect(() => {
+    const fetchIngredients = async () => {
+      try{
+
+        const token = localStorage.getItem('jwtToken');
+        const userID = localStorage.getItem('userID');
+
+        const response = await fetch(`/api/ingredient?userID=${userID}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          },
+        });
+
+        if(!response.ok){
+          throw new Error('Failed to fetch ingredients');
+        }
+
+        const data: Ingredient[] = await response.json();
+        setIngredients(data);
+      }
+      catch(error){
+        console.error('Error fetching ingredients:', error);
+      }
+    };
+
+    fetchIngredients();
+  }, []);
+
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchInput(e.target.value);
   };
 
-  const filteredIngredients = ingredientList.filter((ingredient) => {
+  const filteredIngredients = ingredients.filter((ingredient) => {
     return ingredient.ingredientName.toLowerCase().includes(searchInput.toLowerCase());
   });
 
@@ -77,3 +102,5 @@ export default function IngredientsPage() {
     </div>
   );
 }
+
+export default withAuth(IngredientsPage)
