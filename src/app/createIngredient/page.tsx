@@ -71,7 +71,7 @@ function CreateIngredientPage() {
     pricePerUnit: 0,
   });
 
-  const [submitted, setSubmitted] = useState<Boolean>(true);
+  const [submitted, setSubmitted] = useState<Boolean>(false);
 
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {
     const pricePerUnit = values.price / values.numberUnits;
