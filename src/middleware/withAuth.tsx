@@ -3,8 +3,8 @@ import { useRouter } from 'next/navigation';
 
 const jwt = require('jsonwebtoken');
 
-const withAuth = (WrappedComponent: React.ComponentType) => {
-    const AuthComponent = (props: any) => {
+const withAuth = <P extends object>(WrappedComponent: React.ComponentType<P>): React.FC<P> => {
+    const AuthComponent: React.FC<P> = (props: any) => {
         const [isAuthenticated, setIsAuthenticated] = useState(false);
         const [loading, setLoading] = useState(true);
         const router = useRouter();
