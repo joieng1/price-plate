@@ -11,6 +11,11 @@ interface Recipe {
 }
 
 function RecipeList({ recipeList }: { recipeList: Recipe[] }) {
+  // helper to remove the recipe
+  const handleClick = async (ingredientId: string) => {
+    // TODO: justin 
+  }
+
   return (
     <Box>
       <List>
@@ -21,10 +26,17 @@ function RecipeList({ recipeList }: { recipeList: Recipe[] }) {
               primary={recipe.recipeName}
               secondary={`$${recipe.totalCost.toFixed(2)} per batch`}  // Use totalCost for price per batch
             />
-            <Link href="/recipeCard">
-              <Button variant="contained" className={styles.view} color="success">View</Button>
-            </Link>
-          </ListItem>
+            <div className={styles.buttonContainer}>
+              <Link href="/recipeCard">
+                <Button variant="contained" className={`${styles.view} ${styles.blockButton}`} color="success">View</Button>
+              </Link>
+              <Button variant="contained" className={`${styles.view} ${styles.blockButton}`} color="error"> 
+              {/* For Justin: onClick={()=>handleClick(ingredient._id)}  add this up there ^ */}
+              Delete
+              
+              </Button>
+            </div>      
+          </ListItem> 
         ))}
       </List>
     </Box>
