@@ -6,9 +6,13 @@ import Link from "next/link";
 import withAuth from "@/middleware/withAuth";
 
 interface Ingredient {
+  _id: string;
+  userID: string;
   ingredientName: string;
+  brand: string;
   unitType: string;
   pricePerUnit: number;
+  vendor: string;
 }
 
 function IngredientsList({ ingredientList, refreshIngredients }: { ingredientList: Ingredient[], refreshIngredients: () => void }) {
