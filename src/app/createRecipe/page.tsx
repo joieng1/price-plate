@@ -145,6 +145,11 @@ const CreateRecipePage = () => {
   }, 0);
 
   const handleSubmit = async(e: any) => {
+    if (!recipeName.trim()) {
+      alert('Recipe Name is required');
+      return;
+    }
+
     try{
       const token = localStorage.getItem("jwtToken");
       const userID = localStorage.getItem("userID");
@@ -207,6 +212,7 @@ const CreateRecipePage = () => {
               onChange={(e) => setRecipeName(e.target.value)}
               fullWidth
               className={styles.recipeName}
+              required
             />
             <CreatedIngredientsList
               ingredientList={filteredIngredients}
