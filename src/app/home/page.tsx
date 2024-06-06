@@ -50,7 +50,7 @@ function RecipeList({ recipeList, setRecipes }: { recipeList: Recipe[], setRecip
               secondary={`$${recipe.totalCost.toFixed(2)} per batch`}  // Use totalCost for price per batch
             />
             <div className={styles.buttonContainer}>
-              <Link href="/recipeCard">
+              <Link href={`/recipeCard/${recipe._id}`}>
                 <Button variant="contained" className={`${styles.view} ${styles.blockButton}`} color="success">View</Button>
               </Link>
               <Button variant="contained" className={`${styles.view} ${styles.blockButton}`} color="error" onClick={()=>handleDelete(recipe, setRecipes)}> 
