@@ -68,7 +68,7 @@ function CreateIngredientPage() {
       ingredientName: "",
       brand: "",
       vendorName: "",
-      unitType: unitTypeEnum.g,
+      unitType: UnitTypeEnum.G,
       numberUnits: 0,
       price: 0,
     },
