@@ -45,20 +45,25 @@ function RecipeList({ recipeList, setRecipes }: { recipeList: Recipe[], setRecip
         {recipeList.map((recipe, index) => (
           <ListItem key={index} className={styles.recipe}>
             <ListItemText
-              className={styles.ingredientfield}
+              className={styles.recipefield}
               primary={recipe.recipeName}
               secondary={`$${recipe.totalCost.toFixed(2)} per batch`}  // Use totalCost for price per batch
             />
-            <Link href="/recipeCard">
-              <Button variant="contained" className={styles.view} color="success">View</Button>
-            </Link>
-            <Button variant="contained" className={styles.view} color="error" onClick={() => handleDelete(recipe, setRecipes)}>Delete</Button>
-          </ListItem>
+            <div className={styles.buttonContainer}>
+              <Link href="/recipeCard">
+                <Button variant="contained" className={`${styles.view} ${styles.blockButton}`} color="success">View</Button>
+              </Link>
+              <Button variant="contained" className={`${styles.view} ${styles.blockButton}`} color="error" onClick={()=>handleDelete(recipe, setRecipes)}> 
+                Delete
+              </Button>
+            </div>      
+          </ListItem> 
         ))}
       </List>
     </Box>
   );
 }
+
 
 const SearchBar = ({ onChange, value }: { onChange: (e: React.ChangeEvent<HTMLInputElement>) => void, value: string }) => {
   return (
