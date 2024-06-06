@@ -50,7 +50,7 @@ function IngredientsList({ ingredientList, refreshIngredients }: { ingredientLis
             <ListItemText
               className={styles.ingredientfield}
               primary={`${ingredient.ingredientName}`}
-              secondary={`$${ingredient.pricePerUnit} per ${ingredient.unitType}`}
+              secondary={`$${ingredient.pricePerUnit.toFixed(2)} per ${ingredient.unitType}`}
             />
             {/* <ListItemText className = {styles.ingredientfield} primary={`$${ingredient.unit_cost} per unit`} /> */}
             <div className={styles.container}>
