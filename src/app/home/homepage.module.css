@@ -60,7 +60,8 @@
 
 .recipe {
     width: 100%;
-    margin-bottom: 25px;
+    margin-top: 15px;
+    margin-bottom: 30px;
     background: #9DB4AB;
     border-radius: 5px;
     padding: 15px;
@@ -101,6 +102,18 @@
     background: #283D3B;
     color: white;
 }
+.blockButton {
+    display: block;
+    width: 125px; 
+    margin-top: 8px; 
+  }
+  .buttonContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end; 
+    width: 100%;
+}
+
 
 @media (max-width: 600px) { /* Adjust breakpoint as needed */
     .header {

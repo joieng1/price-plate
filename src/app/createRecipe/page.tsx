@@ -301,8 +301,13 @@ const CreateRecipePage = () => {
     return sum;
   }, 0);
 
-  const handleSubmit = async (e: any) => {
-    try {
+  const handleSubmit = async(e: any) => {
+    if (!recipeName.trim()) {
+      alert('Recipe Name is required');
+      return;
+    }
+
+    try{
       const token = localStorage.getItem("jwtToken");
       const userID = localStorage.getItem("userID");
       const recipeIngredients: IRecipeIngredient[] = checked.map(
@@ -363,6 +368,7 @@ const CreateRecipePage = () => {
               onChange={(e) => setRecipeName(e.target.value)}
               fullWidth
               className={styles.recipeName}
+              required
             />
             <CreatedIngredientsList
               ingredientList={filteredIngredients}
