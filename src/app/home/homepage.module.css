@@ -101,6 +101,19 @@
     background: #283D3B;
     color: white;
 }
+.blockButton {
+    display: block;
+    width: 125px; 
+    margin-top: 8px; 
+  }
+  .buttonContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end; 
+    width: 100%;
+}
+
+
 
 @media (max-width: 600px) { /* Adjust breakpoint as needed */
     .header {
