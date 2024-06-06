@@ -1,5 +1,5 @@
 "use client";
-import React, { FunctionComponent, useState, useEffect } from "react";
+import React, { FunctionComponent, useState, useEffect, useCallback } from "react";
 import styles from "../recipeCard.module.css";
 import { Box, Button, List, ListItem, ListItemText } from "@mui/material";
 import Link from "next/link";
@@ -48,47 +48,6 @@ function calculateTotalRecipeCost(recipe: Recipe): number {
   return recipe.recipeIngredients.reduce(
     (total, ingredient) => total + (ingredient.total_cost || 0),
     0
-  );
-}
-
-function IngredientsList({
-  ingredients,
-  handleClick,
-}: {
-  ingredients: Ingredient[];
-  handleClick: (ingredientID: string) => void;
-}) {
-  return (
-    <Box>
-      <List>
-        {ingredients.map((ingredient, index) => (
-          <ListItem key={index} className={styles.ingredient}>
-            <ListItemText
-              className={styles.ingredientfield}
-              primary={`${ingredient.ingredientName}`}
-              secondary={`${ingredient.numberUnits} ${ingredient.unitType}`}
-            />
-            <p className={styles.totalcost}>
-              Total Cost: ${ingredient.total_cost?.toFixed(2)}
-            </p>
-            {/* Display total cost */}
-            <Link href={`/ingredientCard/${ingredient.ingredientID}`}>
-              <Button variant="contained" className={styles.moreinfo}>
-                More Info
-              </Button>
-            </Link>
-            {/* <Button
-              variant="contained"
-              className={styles.moreinfo}
-              color="error"
-              onClick={() => handleClick(ingredient.ingredientID)}
-            >
-              Delete
-            </Button> */}
-          </ListItem>
-        ))}
-      </List>
-    </Box>
   );
 }
 
@@ -146,6 +105,13 @@ const RecipeCard: FunctionComponent<RecipeCardProps> = ({ params }) => {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       alert("Deleted");
+      //filter recipe ingredients to not include the one with te ingredientID
+      setRecipe((prevRecipe) => ({
+        ...prevRecipe,
+        recipeIngredients: prevRecipe.recipeIngredients.filter(
+          (ingredient) => ingredient.ingredientID !== ingredientID
+        ),
+      }));
       // Handle success
     } catch (error) {
       console.error("Error:", error);
@@ -161,13 +127,16 @@ const RecipeCard: FunctionComponent<RecipeCardProps> = ({ params }) => {
   });
 
   const totalRecipeCost = calculateTotalRecipeCost(recipe);
+
+  
+
   useEffect(() => {
     const fetchRecipe = async () => {
       const id = params.id;
-
+  
       try {
         const token = localStorage.getItem("jwtToken");
-
+  
         const response = await fetch(`/api/recipe/${id}`, {
           method: "GET",
           headers: {
@@ -175,18 +144,17 @@ const RecipeCard: FunctionComponent<RecipeCardProps> = ({ params }) => {
             Authorization: `Bearer ${token}`,
           },
         });
-
+  
         if (!response.ok) {
           throw new Error("Failed to fetch recipe");
         }
-
+  
         const data: Recipe = await response.json();
         setRecipe(data);
       } catch (error) {
         console.error("Error fetching recipe:", error);
       }
     };
-
     fetchRecipe();
   }, [params.id]);
 
@@ -205,10 +173,36 @@ const RecipeCard: FunctionComponent<RecipeCardProps> = ({ params }) => {
         {filteredIngredients.length === 0 ? (
           <p>No ingredients found</p>
         ) : (
-          <IngredientsList
-            handleClick={handleClick}
-            ingredients={filteredIngredients}
-          />
+          <Box>
+      <List>
+        {filteredIngredients.map((ingredient, index) => (
+          <ListItem key={index} className={styles.ingredient}>
+            <ListItemText
+              className={styles.ingredientfield}
+              primary={`${ingredient.ingredientName}`}
+              secondary={`${ingredient.numberUnits} ${ingredient.unitType}`}
+            />
+            <p className={styles.totalcost}>
+              Total Cost: ${ingredient.total_cost?.toFixed(2)}
+            </p>
+            {/* Display total cost */}
+            <Link href={`/ingredientCard/${ingredient.ingredientID}`}>
+              <Button variant="contained" className={styles.moreinfo}>
+                More Info
+              </Button>
+            </Link>
+            <Button
+              variant="contained"
+              className={styles.moreinfo}
+              color="error"
+              onClick={() => handleClick(ingredient.ingredientID)}
+            >
+              Delete
+            </Button>
+          </ListItem>
+        ))}
+      </List>
+    </Box>
         )}
         <Link href="/createIngredient">
           <Button
