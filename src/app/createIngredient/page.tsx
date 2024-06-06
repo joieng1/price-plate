@@ -26,8 +26,21 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { UnitTypeEnum } from '../../types/unitTypes';
 
-const unitTypeEnum = z.enum(["kg", "lb", "oz", "g"]);
+const unitTypeEnum = z.enum([
+  UnitTypeEnum.KG,
+  UnitTypeEnum.LB,
+  UnitTypeEnum.OZ,
+  UnitTypeEnum.G,
+  UnitTypeEnum.TSP,
+  UnitTypeEnum.TBSP,
+  UnitTypeEnum.CUP,
+  UnitTypeEnum.QUART,
+  UnitTypeEnum.GAL,
+  UnitTypeEnum.FL_OZ,
+  UnitTypeEnum.UNIT,
+]);
 
 const formSchema = z.object({
   ingredientName: z.string().min(1, "Ingredient name must not be empty"),
@@ -55,7 +68,7 @@ function CreateIngredientPage() {
       ingredientName: "",
       brand: "",
       vendorName: "",
-      unitType: unitTypeEnum.Enum.g,
+      unitType: UnitTypeEnum.G,
       numberUnits: 0,
       price: 0,
     },
