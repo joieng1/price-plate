@@ -55,7 +55,7 @@ export async function DELETE(req: NextRequest, { params }: any) {
     // Update the total cost of the recipe
     recipe.totalCost = recipe.recipeIngredients.reduce(
       (total: number, ingredient: any) =>
-        total + ingredient.numberUnits * ingredient.price,
+        total + ingredient.price,
       0
     );
 
