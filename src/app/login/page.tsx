@@ -70,6 +70,7 @@ const LoginPage = () => {
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 className={styles.loginInput}
+                data-test="username-input"
               />
             </div>
 
@@ -81,13 +82,14 @@ const LoginPage = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className={styles.loginInput}
+                data-test="password-input"
               />
             </div>
             <div className={styles.loginButtonContainer}>
-              <input type="submit" className={styles.loginButton} value="Login"/>
+              <input type="submit" className={styles.loginButton} value="Login" data-test="login-button"/>
             </div>
           </form>
-          <a href="signup" className={styles.signupLink}>New to PricePlate? Click here to create an account</a>
+          <a href="signup" className={styles.signupLink} data-test="signup-link">New to PricePlate? Click here to create an account</a>
         </div> 
 
       </div>
