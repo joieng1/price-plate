@@ -6,8 +6,8 @@ Price Plate is an everyday budgeting tool that allows financially aware shoppers
 
 https://www.figma.com/design/8aUUnvouOA5CHVf2S0JHta/PricePlate?node-id=52-256&t=GMElLEiKnFXdw5R3-1
 
-
 ## Development Environment Set Up
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 # Getting Started
@@ -18,11 +18,11 @@ To check if it is installed, run:
 
 npm -v
 
-In the root directory, run 
+In the root directory, run
 
 npm i
 
-To set up the environment 
+To set up the environment
 
 Now run the development server:
 
@@ -31,7 +31,6 @@ npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
 
 This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
 
@@ -48,4 +47,6 @@ Our project is deployed on vercel here:
 
 https://price-plate.vercel.app/
 
+## UML
 
+[a relative link](UML.md)
