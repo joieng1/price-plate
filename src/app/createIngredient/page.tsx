@@ -44,7 +44,7 @@ const unitTypeEnum = z.enum([
 
 const formSchema = z.object({
   ingredientName: z.string().min(1, "Ingredient name must not be empty"),
-  brand: z.string().min(1, "Vendor name must not be empty"),
+  brand: z.string().min(1, "Brand name must not be empty"),
   vendorName: z.string().min(1, "Vendor name must not be empty"),
   unitType: unitTypeEnum,
   numberUnits: z.coerce.number().min(0, "Units must be greater or equal to 0"),
@@ -61,6 +61,7 @@ interface Ingredient {
   price: number;
   pricePerUnit: number;
 }
+
 function CreateIngredientPage() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -104,7 +105,6 @@ function CreateIngredientPage() {
 
     const token = localStorage.getItem("jwtToken");
     try {
-      // need to update
       const response = await fetch("/api/ingredient", {
         method: "POST",
         headers: {
@@ -115,7 +115,7 @@ function CreateIngredientPage() {
       });
 
       const data = await response.json();
-      if(data.message == "Failed: Ingredient name already used"){
+      if (data.message == "Failed: Ingredient name already used") {
         alert("Ingredient name already used");
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -126,14 +126,11 @@ function CreateIngredientPage() {
 
       console.log("Success:", data);
       setSubmitted(true);
-      // Handle success
     } catch (error) {
       console.error("Error:", error);
-      // Handle error
     }
   };
 
-  // access localStorage on client side
   useEffect(() => {
     const userID = localStorage.getItem("userID")?.toString() || "";
     setIngredient((prev) => ({ ...prev, userID }));
@@ -163,64 +160,59 @@ function CreateIngredientPage() {
             <FormField
               control={form.control}
               name="ingredientName"
-              render={({ field }) => {
-                return (
-                  <FormItem className="my-5">
-                    <FormLabel className="text-[2rem]">
-                      Ingredient Name
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        className="text-[1.2rem] bg-[#FFFCF4]"
-                        placeholder="Ingredient Name"
-                        type="string"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                );
-              }}
+              render={({ field }) => (
+                <FormItem className="my-5">
+                  <FormLabel className="text-[2rem]">Ingredient Name</FormLabel>
+                  <FormControl>
+                    <Input
+                      className="text-[1.2rem] bg-[#FFFCF4]"
+                      placeholder="Ingredient Name"
+                      type="string"
+                      {...field}
+                      data-test="ingredient-name-input"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
             <FormField
               control={form.control}
               name="brand"
-              render={({ field }) => {
-                return (
-                  <FormItem className="my-5">
-                    <FormLabel className="text-[2rem]">Brand</FormLabel>
-                    <FormControl>
-                      <Input
-                        className="text-[1.2rem] bg-[#FFFCF4]"
-                        placeholder="Brand Name"
-                        type="string"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                );
-              }}
+              render={({ field }) => (
+                <FormItem className="my-5">
+                  <FormLabel className="text-[2rem]">Brand</FormLabel>
+                  <FormControl>
+                    <Input
+                      className="text-[1.2rem] bg-[#FFFCF4]"
+                      placeholder="Brand Name"
+                      type="string"
+                      {...field}
+                      data-test="brand-input"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
             <FormField
               control={form.control}
               name="vendorName"
-              render={({ field }) => {
-                return (
-                  <FormItem className="my-5">
-                    <FormLabel className="text-[2rem]">Vendor Name</FormLabel>
-                    <FormControl>
-                      <Input
-                        className="text-[1.2rem] bg-[#FFFCF4]"
-                        placeholder="Vendor Name"
-                        type="string"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                );
-              }}
+              render={({ field }) => (
+                <FormItem className="my-5">
+                  <FormLabel className="text-[2rem]">Vendor Name</FormLabel>
+                  <FormControl>
+                    <Input
+                      className="text-[1.2rem] bg-[#FFFCF4]"
+                      placeholder="Vendor Name"
+                      type="string"
+                      {...field}
+                      data-test="vendor-name-input"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
             <FormField
               control={form.control}
@@ -238,7 +230,7 @@ function CreateIngredientPage() {
                             control={form.control}
                             render={({ field }) => (
                               <DropdownMenu>
-                                <DropdownMenuTrigger className="w-[10rem]">
+                                <DropdownMenuTrigger className="w-[10rem]" data-test="unit-type-dropdown">
                                   <div className="border-[1.5px] border-gray-300 rounded-md p-1 cursor-pointer">
                                     {field.value || "Select Unit Type"}
                                   </div>
@@ -249,6 +241,7 @@ function CreateIngredientPage() {
                                       key={unit}
                                       className="text-[1.2rem]"
                                       onSelect={() => field.onChange(unit)}
+                                      data-test={`unit-type-${unit}`}
                                     >
                                       {unit}
                                     </DropdownMenuItem>
@@ -261,6 +254,7 @@ function CreateIngredientPage() {
                       }
                       type="number"
                       {...field}
+                      data-test="num-units"
                     />
                   </FormControl>
                   <FormMessage />
@@ -270,35 +264,29 @@ function CreateIngredientPage() {
             <FormField
               control={form.control}
               name="price"
-              render={({ field }) => {
-                return (
-                  <FormItem className="my-5 flex flex-col">
-                    <FormLabel className="text-[2rem]">Price</FormLabel>
-                    <FormControl>
-                      {/* <Input placeholder="Units" type="number" {...field} /> */}
-                      <OutlinedInput
-                        className="text-[1.2rem] bg-[#FFFCF4]"
-                        startAdornment={
-                          <InputAdornment position="start">$</InputAdornment>
-                        }
-                        type="number"
-                        {...field}
-                      />
-                      {/* Will need to be a dropdown selection or something to select unit type */}
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                );
-              }}
+              render={({ field }) => (
+                <FormItem className="my-5 flex flex-col">
+                  <FormLabel className="text-[2rem]">Price</FormLabel>
+                  <FormControl>
+                    <OutlinedInput
+                      className="text-[1.2rem] bg-[#FFFCF4]"
+                      startAdornment={<InputAdornment position="start">$</InputAdornment>}
+                      type="number"
+                      {...field}
+                      data-test="price-input"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
-            <div className="w-full flex justify-center mt-5">
-              <Button
-                type="submit"
-                className="rounded-[20px] mx-auto text-xl px-5 h-20 w-80"
-              >
-                Submit
-              </Button>
-            </div>
+            <Button
+              type="submit"
+              className="bg-[#283D3B] text-white text-[1.5rem] mx-auto mt-10"
+              data-test="submit-button"
+            >
+              Submit
+            </Button>
           </form>
         </Form>
       )}

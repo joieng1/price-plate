@@ -44,9 +44,9 @@ const WelcomePage = () => {
             </div>
             <div className="flex flex-col items-center">
               <Link href="/signup">
-                <button className={styles.startButton}>Get Started</button>
+                <button className={styles.startButton} data-test="get-started-button">Get Started</button>
               </Link>
-              <a href="login" className={`${styles.signupLink} mt-4`}>
+              <a href="login" className={`${styles.signupLink} mt-4`} >
                 Already have an account? Click here to sign in
               </a>
             </div>

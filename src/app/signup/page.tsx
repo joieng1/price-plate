@@ -86,7 +86,7 @@ const SignUpPage = () => {
         </div>
         
         <input type="submit" className={styles.signUpButton} value="Sign Up"/>
-        <a href="login" className={styles.linkBlue}>Already have an account? Click here to log in</a>
+        <a href="login" className={styles.linkBlue} data-test="sign-in-link">Already have an account? Click here to log in</a>
 
         </form>
       </div>
