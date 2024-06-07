@@ -8,20 +8,19 @@ https://www.figma.com/design/8aUUnvouOA5CHVf2S0JHta/PricePlate?node-id=52-256&t=
 
 ## Development Environment Set Up
 
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
-
-## Getting Started
-# Getting Started
-
 Make sure Node.js is installed, which can be installed here: https://nodejs.org/en/
 
 To check if it is installed, run:
 
+```bash
 npm -v
+```
 
 In the root directory, run
 
+```bash
 npm i
+```
 
 To set up the environment
 
