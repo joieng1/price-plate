@@ -77,6 +77,7 @@ function CreatedIngredientsList({
                   ingredient.unitType
                 }`}
                 className={styles.ingredientName}
+                data-test={`ingredient-name-${index}`}
               />
 
               <OutlinedInput
@@ -114,6 +115,7 @@ function CreatedIngredientsList({
                     </DropdownMenu>
                   </InputAdornment>
                 }
+                data-test={`unit-input-${index}`}
               />
 
               <div className={styles.secondaryAction}>
@@ -124,6 +126,7 @@ function CreatedIngredientsList({
                     (units[ingredient.ingredientName]?.value || 0)
                   ).toFixed(2)}`}
                   className={styles.costText}
+                  data-test={`cost-text-${index}`}
                 />
                 <Checkbox
                   edge="end"
@@ -132,6 +135,7 @@ function CreatedIngredientsList({
                     checked.indexOf(ingredient.ingredientName) !== -1 &&
                     (units[ingredient.ingredientName].value || 0) > 0
                   }
+                  data-test="checkbox"
                 />
               </div>
             </div>
@@ -156,6 +160,7 @@ const SearchBar = ({
       placeholder="Search Ingredient"
       onChange={onChange}
       value={value}
+      data-test="search-input"
     />
   );
 };
@@ -202,7 +207,7 @@ const CreateRecipePage = () => {
             acc[ingredient.ingredientName] = {
               value: 0,
               unitType: ingredient.unitType,
-              convertedPricePerUnit: ingredient.pricePerUnit
+              convertedPricePerUnit: ingredient.pricePerUnit,
             };
             return acc;
           },
@@ -301,13 +306,13 @@ const CreateRecipePage = () => {
     return sum;
   }, 0);
 
-  const handleSubmit = async(e: any) => {
+  const handleSubmit = async (e: any) => {
     if (!recipeName.trim()) {
-      alert('Recipe Name is required');
+      alert("Recipe Name is required");
       return;
     }
 
-    try{
+    try {
       const token = localStorage.getItem("jwtToken");
       const userID = localStorage.getItem("userID");
       const recipeIngredients: IRecipeIngredient[] = checked.map(
@@ -321,7 +326,8 @@ const CreateRecipePage = () => {
           return {
             ingredientID: recipeIngredient._id,
             ingredientName: ingredientName,
-            unitType: units[ingredientName].unitType || recipeIngredient.unitType,
+            unitType:
+              units[ingredientName].unitType || recipeIngredient.unitType,
             numberUnits: units[ingredientName].value,
             price:
               (units[ingredientName].convertedPricePerUnit ||
@@ -369,6 +375,7 @@ const CreateRecipePage = () => {
               fullWidth
               className={styles.recipeName}
               required
+              data-test="recipe-name-input"
             />
             <CreatedIngredientsList
               ingredientList={filteredIngredients}
@@ -391,6 +398,7 @@ const CreateRecipePage = () => {
           className={styles.createbutton}
           color="success"
           onClick={handleSubmit}
+          data-test="create-recipe-button"
         >
           Create Recipe
         </Button>

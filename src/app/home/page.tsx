@@ -2,17 +2,20 @@
 import React, { useState, useEffect } from "react";
 import styles from "./homepage.module.css";
 import { Box, Button, List, ListItem, ListItemText } from "@mui/material";
-import Link from 'next/link';
+import Link from "next/link";
 import withAuth from "@/middleware/withAuth";
 
 interface Recipe {
-  _id: string
+  _id: string;
   userID: string;
   recipeName: String;
-  totalCost: Number
+  totalCost: Number;
 }
 
-const handleDelete = async (recipe: Recipe, setRecipes: React.Dispatch<React.SetStateAction<Recipe[]>>) => {
+const handleDelete = async (
+  recipe: Recipe,
+  setRecipes: React.Dispatch<React.SetStateAction<Recipe[]>>
+) => {
   try {
     var result = confirm(`Confirming To Delete ${recipe.recipeName}`);
     if (result) {
@@ -27,18 +30,25 @@ const handleDelete = async (recipe: Recipe, setRecipes: React.Dispatch<React.Set
       });
 
       if (response.ok) {
-        setRecipes(prevRecipes => prevRecipes.filter(r => r._id !== recipe._id));
-      } 
-      else {
+        setRecipes((prevRecipes) =>
+          prevRecipes.filter((r) => r._id !== recipe._id)
+        );
+      } else {
         console.error("Failed to delete recipe");
       }
     }
   } catch (error) {
     console.error("An error occurred", error);
   }
-}
+};
 
-function RecipeList({ recipeList, setRecipes }: { recipeList: Recipe[], setRecipes: React.Dispatch<React.SetStateAction<Recipe[]>> }) {
+function RecipeList({
+  recipeList,
+  setRecipes,
+}: {
+  recipeList: Recipe[];
+  setRecipes: React.Dispatch<React.SetStateAction<Recipe[]>>;
+}) {
   return (
     <Box>
       <List>
@@ -47,25 +57,42 @@ function RecipeList({ recipeList, setRecipes }: { recipeList: Recipe[], setRecip
             <ListItemText
               className={styles.recipefield}
               primary={recipe.recipeName}
-              secondary={`$${recipe.totalCost.toFixed(2)} per batch`}  // Use totalCost for price per batch
+              secondary={`$${recipe.totalCost.toFixed(2)} per batch`} // Use totalCost for price per batch
             />
             <div className={styles.buttonContainer}>
               <Link href={`/recipeCard/${recipe._id}`}>
-                <Button variant="contained" className={`${styles.view} ${styles.blockButton}`} color="success">View</Button>
+                <Button
+                  variant="contained"
+                  className={`${styles.view} ${styles.blockButton}`}
+                  color="success"
+                  data-test="view"
+                >
+                  View
+                </Button>
               </Link>
-              <Button variant="contained" className={`${styles.view} ${styles.blockButton}`} color="error" onClick={()=>handleDelete(recipe, setRecipes)}> 
+              <Button
+                variant="contained"
+                className={`${styles.view} ${styles.blockButton}`}
+                color="error"
+                onClick={() => handleDelete(recipe, setRecipes)}
+              >
                 Delete
               </Button>
-            </div>      
-          </ListItem> 
+            </div>
+          </ListItem>
         ))}
       </List>
     </Box>
   );
 }
 
-
-const SearchBar = ({ onChange, value }: { onChange: (e: React.ChangeEvent<HTMLInputElement>) => void, value: string }) => {
+const SearchBar = ({
+  onChange,
+  value,
+}: {
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  value: string;
+}) => {
   return (
     <input
       type="search"
@@ -125,7 +152,14 @@ function RecipePage() {
           <RecipeList recipeList={filteredRecipes} setRecipes={setRecipes} />
         )}
         <Link href="/createRecipe">
-          <Button variant="contained" className={styles.createbutton} color="success">Create New Recipe</Button>
+          <Button
+            variant="contained"
+            className={styles.createbutton}
+            color="success"
+            data-test="create-recipe-button"
+          >
+            Create New Recipe
+          </Button>
         </Link>
       </div>
     </div>

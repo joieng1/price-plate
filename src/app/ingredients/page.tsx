@@ -15,11 +15,17 @@ interface Ingredient {
   vendor: string;
 }
 
-function IngredientsList({ ingredientList, refreshIngredients }: { ingredientList: Ingredient[], refreshIngredients: () => void }) {
+function IngredientsList({
+  ingredientList,
+  refreshIngredients,
+}: {
+  ingredientList: Ingredient[];
+  refreshIngredients: () => void;
+}) {
   //deletes ingredient
   const handleClick = async (ingredientId: string) => {
     const token = localStorage.getItem("jwtToken");
-    console.log("Attempting to delete ", ingredientId)
+    console.log("Attempting to delete ", ingredientId);
     try {
       const response = await fetch(`/api/ingredient/${ingredientId}`, {
         method: "DELETE",
@@ -40,8 +46,8 @@ function IngredientsList({ ingredientList, refreshIngredients }: { ingredientLis
       alert("Delete failed");
       // Handle error
     }
-  }
-  
+  };
+
   return (
     <Box>
       <List>
@@ -50,7 +56,7 @@ function IngredientsList({ ingredientList, refreshIngredients }: { ingredientLis
             <ListItemText
               className={styles.ingredientfield}
               primary={`${ingredient.ingredientName}`}
-              secondary={`$${ingredient.pricePerUnit.toFixed(2)} per ${ingredient.unitType}`}
+              secondary={`$${ingredient.pricePerUnit} per ${ingredient.unitType}`}
             />
             {/* <ListItemText className = {styles.ingredientfield} primary={`$${ingredient.unit_cost} per unit`} /> */}
             <div className={styles.container}>
@@ -59,6 +65,7 @@ function IngredientsList({ ingredientList, refreshIngredients }: { ingredientLis
                   variant="contained"
                   className={styles.moreinfo}
                   color="success"
+                  data-test={`more-info-${ingredient.ingredientName}`}
                 >
                   More Info
                 </Button>
@@ -67,7 +74,7 @@ function IngredientsList({ ingredientList, refreshIngredients }: { ingredientLis
                 variant="contained"
                 className={styles.moreinfo}
                 color="error"
-                onClick={()=>handleClick(ingredient._id)}
+                onClick={() => handleClick(ingredient._id)}
               >
                 Delete
               </Button>
@@ -100,7 +107,7 @@ const SearchBar = ({
 function IngredientsPage() {
   const [ingredients, setIngredients] = useState<Ingredient[]>([]);
   const [searchInput, setSearchInput] = useState<string>("");
-  
+
   const fetchIngredients = async () => {
     try {
       const token = localStorage.getItem("jwtToken");
@@ -146,13 +153,17 @@ function IngredientsPage() {
         {filteredIngredients.length === 0 ? (
           <p>No ingredients found</p>
         ) : (
-          <IngredientsList ingredientList={filteredIngredients} refreshIngredients={fetchIngredients}/>
+          <IngredientsList
+            ingredientList={filteredIngredients}
+            refreshIngredients={fetchIngredients}
+          />
         )}
         <Link href="/createIngredient">
           <Button
             variant="contained"
             className={styles.createbutton}
             color="success"
+            data-test="create-ingredient-button"
           >
             Create New Ingredient
           </Button>

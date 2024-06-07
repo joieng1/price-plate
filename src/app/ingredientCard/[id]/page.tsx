@@ -228,7 +228,7 @@ const IngredientCard: FunctionComponent<IngredientCardProps> = ({ params }) => {
                 <div className={styles.box}>
                   <p className={styles.blackFont}>
                     <h1 className={styles.formLabel}>Price per Unit</h1>
-                    {ingredient.pricePerUnit.toFixed(2)}/{ingredient.unitType}
+                    {ingredient.pricePerUnit}/{ingredient.unitType}
                   </p>
                 </div>
                 <div className={styles.box}>
