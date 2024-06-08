@@ -75,6 +75,7 @@ function RecipeList({
                 className={`${styles.view} ${styles.blockButton}`}
                 color="error"
                 onClick={() => handleDelete(recipe, setRecipes)}
+                data-test = "delete-recipe"
               >
                 Delete
               </Button>
