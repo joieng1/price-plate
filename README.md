@@ -34,6 +34,21 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
 
+Testing: 
+
+We test using cypress. To Install, run:
+
+```bash
+npx install cypress
+```
+
+Then, to open the testing, run: 
+
+```bash
+npx cypress open
+```
+
+
 ## Deploy on Vercel
 Our project is deployed on vercel here:
 
