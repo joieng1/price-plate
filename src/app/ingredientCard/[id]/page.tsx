@@ -212,7 +212,7 @@ const IngredientCard: FunctionComponent<IngredientCardProps> = ({ params }) => {
           </form>
         ) : (
           <>
-            <Button className="w-20" onClick={() => setEditMode(!editMode)}>
+            <Button className="w-20" onClick={() => setEditMode(!editMode)} data-test = "Edit">
               Edit
             </Button>
             <div className={styles.ingredientsCard}>

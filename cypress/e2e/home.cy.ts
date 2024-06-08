@@ -119,5 +119,6 @@ describe("Home Page", () => {
     cy.url().should("include", "/ingredients");
     cy.get("body").click(50, 50, { force: true });
     cy.get('[data-test="more-info-Test Ingredient"]').click();
+    cy.get('[data-test="Edit"]').click()
   });
 });

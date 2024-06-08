@@ -75,6 +75,7 @@ function IngredientsList({
                 className={styles.moreinfo}
                 color="error"
                 onClick={() => handleClick(ingredient._id)}
+                data-test = "delete-button"
               >
                 Delete
               </Button>
